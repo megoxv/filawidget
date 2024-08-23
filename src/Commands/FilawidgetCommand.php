@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace IbrahimBougaoua\Filawidget\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilawidgetCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filawidget';
 
     public $description = 'My command';
 
