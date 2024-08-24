@@ -1,0 +1,108 @@
+<?php
+
+namespace IbrahimBougaoua\Filawidget\Resources;
+
+use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource\Pages;
+use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource\RelationManagers;
+use IbrahimBougaoua\Filawidget\Models\WidgetField;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use IbrahimBougaoua\Filawidget\Models\WidgetType;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class WidgetFieldResource extends Resource
+{
+    protected static ?string $model = WidgetField::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Appearance';
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('widget_type_id')
+                    ->label('Widget Type')
+                    ->options(WidgetType::all()->pluck('name', 'id'))
+                    ->required(),
+    
+                Forms\Components\TextInput::make('name')
+                    ->label('Field Name')
+                    ->required(),
+    
+                    Forms\Components\Select::make('type')
+                    ->label('Field Type')
+                    ->options([
+                        'text' => 'Text',
+                        'textarea' => 'Textarea',
+                        'number' => 'Number',
+                        'select' => 'Select',
+                        'checkbox' => 'Checkbox',
+                        'radio' => 'Radio',
+                        'toggle' => 'Toggle',
+                        'color' => 'Color Picker',
+                        'date' => 'Date Picker',
+                        'datetime' => 'Date Time Picker',
+                        'time' => 'Time Picker',
+                        'file' => 'File Upload',
+                        'image' => 'Image Upload',
+                        'richeditor' => 'Rich Editor',
+                        'markdown' => 'Markdown Editor',
+                        'tags' => 'Tags Input',
+                        'password' => 'Password',
+                    ])
+                    ->required(),
+    
+                Forms\Components\Textarea::make('options')
+                    ->label('Options')
+                    ->helperText('Provide additional options in JSON format (e.g., {"default": "value", "validation": "required|max:255"})'),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('widgetType.name')->label('Widget Type'),
+                Tables\Columns\TextColumn::make('name')->label('Field Name'),
+                Tables\Columns\TextColumn::make('type')->label('Field Type'),
+                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListWidgetFields::route('/'),
+            'create' => Pages\CreateWidgetField::route('/create'),
+            'edit' => Pages\EditWidgetField::route('/{record}/edit'),
+        ];
+    }
+}
