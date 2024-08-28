@@ -4,22 +4,28 @@ namespace IbrahimBougaoua\Filawidget\Resources;
 
 use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource\Pages;
 use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource\RelationManagers;
-use IbrahimBougaoua\Filawidget\Models\WidgetField;
+use IbrahimBougaoua\Filawidget\Models\Field;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use IbrahimBougaoua\Filawidget\Models\WidgetType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WidgetFieldResource extends Resource
 {
-    protected static ?string $model = WidgetField::class;
+    protected static ?string $model = Field::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Hide this resource from the navigation
+        return auth()->user()->isAdmin();
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return 'Appearance';
@@ -29,11 +35,6 @@ class WidgetFieldResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('widget_type_id')
-                    ->label('Widget Type')
-                    ->options(WidgetType::all()->pluck('name', 'id'))
-                    ->required(),
-    
                 Forms\Components\TextInput::make('name')
                     ->label('Field Name')
                     ->required(),
@@ -71,11 +72,23 @@ class WidgetFieldResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('widgetType.name')->label('Widget Type'),
-                Tables\Columns\TextColumn::make('name')->label('Field Name'),
-                Tables\Columns\TextColumn::make('type')->label('Field Type'),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                TextColumn::make('type.name')
+                ->badge()
+                ->color('success')
+                ->label('Widget Type'),
+                TextColumn::make('name')
+                ->badge()
+                ->color('success')
+                ->label('Field Name'),
+                TextColumn::make('type')
+                ->badge()
+                ->color('success')
+                ->label('Field Type'),
+                TextColumn::make('created_at')
+                    ->dateTime('d, M Y h:s A')
+                    ->badge()
+                    ->color('success')
+                    ->label('Created at'),
             ])
             ->filters([
                 //

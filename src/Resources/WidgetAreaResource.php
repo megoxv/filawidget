@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,6 +20,12 @@ class WidgetAreaResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Hide this resource from the navigation
+        return auth()->user()->isAdmin();
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return 'Appearance';
@@ -44,10 +51,19 @@ class WidgetAreaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('name')->label('Area Name'),
-                Tables\Columns\TextColumn::make('identifier')->label('Identifier'),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                TextColumn::make('name')
+                ->badge()
+                ->color('success')
+                ->label('Area Name'),
+                TextColumn::make('identifier')
+                ->badge()
+                ->color('success')
+                ->label('Identifier'),
+                TextColumn::make('created_at')
+                    ->dateTime('d, M Y h:s A')
+                    ->badge()
+                    ->color('success')
+                    ->label('Created at'),
             ])
             ->filters([
                 //

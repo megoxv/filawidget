@@ -8,13 +8,6 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('widget_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name'); // The name of the widget type (e.g., Text, Image)
-            $table->string('class'); // Fully qualified class name of the widget type
-            $table->timestamps();
-        });
-
         Schema::create('widget_areas', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // The name of the widget area (e.g., Sidebar, Footer)
@@ -22,9 +15,17 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('widget_fields', function (Blueprint $table) {
+        Schema::create('widget_types', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('widget_type_id')->constrained('widget_types')->onDelete('cascade');
+            $table->string('name');
+            $table->json('config')->nullable(); // Configuration options for the widget
+            $table->text('fieldsIds')->nullable(); // Display order of the widget within its area
+            $table->integer('order')->default(0); // Display order of the widget within its area
+            $table->timestamps();
+        });
+
+        Schema::create('fields', function (Blueprint $table) {
+            $table->id();
             $table->string('name'); // The name of the field (e.g., 'title', 'content')
             $table->string('type'); // The type of the field (e.g., 'text', 'textarea', 'number', 'color')
             $table->json('options')->nullable(); // Additional options like default value, validation rules
@@ -33,10 +34,17 @@ return new class extends Migration
 
         Schema::create('widgets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('widget_type_id')->constrained('widget_types')->onDelete('cascade');
+            $table->string('name');
+            $table->string('slug');
             $table->foreignId('widget_area_id')->constrained('widget_areas')->onDelete('cascade');
-            $table->json('config')->nullable(); // Configuration options for the widget
-            $table->integer('order')->default(0); // Display order of the widget within its area
+            $table->foreignId('widget_type_id')->constrained('widget_types')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Schema::create('widget_fields', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('widget_id')->constrained('widgets')->onDelete('cascade');
+            $table->foreignId('widget_field_id')->constrained('fields')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -44,8 +52,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('widgets');
+        Schema::dropIfExists('fields');
         Schema::dropIfExists('widget_fields');
         Schema::dropIfExists('widget_areas');
-        Schema::dropIfExists('widget_types');
     }
 };

@@ -6,19 +6,35 @@ use Illuminate\Database\Eloquent\Model;
 
 class Widget extends Model
 {
-    protected $fillable = ['widget_type_id', 'widget_area_id', 'config', 'order'];
+    protected $table = 'widgets';
+
+    protected $fillable = ['name', 'widget_area_id', 'widget_type_id','fieldsIds'];
 
     protected $casts = [
-        'config' => 'array',
+        'fieldsIds' => 'array', // Automatically cast JSON to an array
     ];
 
+    /**
+     * Get the widget area that owns the widget.
+     */
+    public function area()
+    {
+        return $this->belongsTo(WidgetArea::class);
+    }
+
+    /**
+     * Get the widget type that owns the widget.
+     */
     public function type()
     {
         return $this->belongsTo(WidgetType::class);
     }
-
-    public function area()
+    
+    /**
+     * Get the fields associated with the widget.
+     */
+    public function fields()
     {
-        return $this->belongsTo(WidgetArea::class);
+        return $this->belongsToMany(Field::class, 'widget_fields', 'widget_id', 'field_id');
     }
 }

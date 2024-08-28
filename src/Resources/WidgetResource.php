@@ -5,10 +5,18 @@ namespace IbrahimBougaoua\Filawidget\Resources;
 use IbrahimBougaoua\Filawidget\Resources\WidgetResource\Pages;
 use IbrahimBougaoua\Filawidget\Resources\WidgetResource\RelationManagers;
 use IbrahimBougaoua\Filawidget\Models\Widget;
+use IbrahimBougaoua\Filawidget\Models\Field as WidgetsField;
 use Filament\Forms;
+use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use IbrahimBougaoua\Filawidget\Models\WidgetArea;
 use IbrahimBougaoua\Filawidget\Models\WidgetField;
@@ -21,75 +29,100 @@ class WidgetResource extends Resource
     protected static ?string $model = Widget::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Hide this resource from the navigation
+        return auth()->user()->isAdmin();
+    }
     
     public static function getNavigationGroup(): ?string
     {
         return 'Appearance';
     }
-
+    
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('widget_type_id')
-                ->label('Widget Type')
-                ->options(WidgetType::all()->pluck('name', 'id'))
-                ->reactive()
-                ->required()
-                ->afterStateUpdated(fn ($state, callable $set) => $set('config', [])),
+                Section::make()
+                ->schema([
+                    TextInput::make('name')
+                        ->label('Name')
+                        ->required()
+                        ->columnSpanFull(),
+                    Select::make('widget_area_id')
+                        ->label('Area')
+                        ->options(
+                            WidgetArea::pluck('name','id')->toArray()
+                        )
+                        ->required(),
+                    Select::make('widget_type_id')
+                        ->label('Widget Type')
+                        ->options(
+                            WidgetType::pluck('name','id')->toArray()
+                        )
+                        ->afterStateUpdated(function (callable $set, $state) { 
+                            $set('widget_type_id', $state);
+                        })
+                        ->reactive()
+                        ->required(),
+                    Hidden::make('fieldsIds')
+                    ->reactive(),
+                    Repeater::make('fields')
+                        ->schema(function (callable $get) {
+                            
+                            $fields = WidgetsField::whereIn('id',$get('fieldsIds'))->get(['name','type','options','id'])->toArray();
 
-            Forms\Components\Select::make('widget_area_id')
-                ->label('Widget Area')
-                ->options(WidgetArea::all()->pluck('name', 'id'))
-                ->required(),
-                Forms\Components\Repeater::make('config')
-                ->schema(function (callable $get) {
-                    $widgetTypeId = $get('widget_type_id');
-                    if (!$widgetTypeId) {
-                        return [];
-                    }
-            
-                    $fields = WidgetField::where('widget_type_id', $widgetTypeId)->get();
-            
-                    return $fields->map(function ($field) {
-                        $component = match ($field->type) {
-                            'text' => Forms\Components\TextInput::make("config.{$field->name}"),
-                            'textarea' => Forms\Components\Textarea::make("config.{$field->name}"),
-                            'number' => Forms\Components\TextInput::make("config.{$field->name}")->numeric(),
-                            'select' => Forms\Components\Select::make("config.{$field->name}")
-                                         ->options($field->options['options'] ?? []),
-                            'checkbox' => Forms\Components\Checkbox::make("config.{$field->name}"),
-                            'radio' => Forms\Components\Radio::make("config.{$field->name}")
-                                         ->options($field->options['options'] ?? []),
-                            'toggle' => Forms\Components\Toggle::make("config.{$field->name}"),
-                            'color' => Forms\Components\ColorPicker::make("config.{$field->name}"),
-                            'date' => Forms\Components\DatePicker::make("config.{$field->name}"),
-                            'datetime' => Forms\Components\DateTimePicker::make("config.{$field->name}"),
-                            'time' => Forms\Components\TimePicker::make("config.{$field->name}"),
-                            'file' => Forms\Components\FileUpload::make("config.{$field->name}"),
-                            'image' => Forms\Components\FileUpload::make("config.{$field->name}")->image(),
-                            'richeditor' => Forms\Components\RichEditor::make("config.{$field->name}"),
-                            'markdown' => Forms\Components\MarkdownEditor::make("config.{$field->name}"),
-                            'tags' => Forms\Components\TagsInput::make("config.{$field->name}"),
-                            'password' => Forms\Components\TextInput::make("config.{$field->name}")->password(),
-                            default => Forms\Components\TextInput::make("config.{$field->name}"),
-                        };
-            
-                        // Apply default value if specified
-                        if (isset($field->options['default'])) {
-                            $component->default($field->options['default']);
-                        }
-            
-                        // Apply validation rules if specified
-                        if (isset($field->options['validation'])) {
-                            $component->rules($field->options['validation']);
-                        }
-            
-                        return $component->label(ucfirst(str_replace('_', ' ', $field->name)));
-                    })->toArray();
-                })
-                ->label('Configuration')
-                ->required(),            
+                            return collect($fields)->map(function ($field) {
+                                $component = match ($field['type']) {
+                                    'text' => Forms\Components\TextInput::make("config.{$field['name']}"),
+                                    'textarea' => Forms\Components\Textarea::make("config.{$field['name']}"),
+                                    'number' => Forms\Components\TextInput::make("config.{$field['name']}")->numeric(),
+                                    'select' => Forms\Components\Select::make("config.{$field['name']}")
+                                                ->options($field['options'] ?? []),
+                                    'checkbox' => Forms\Components\Checkbox::make("config.{$field['name']}"),
+                                    'radio' => Forms\Components\Radio::make("config.{$field['name']}")
+                                                ->options($field['options'] ?? []),
+                                    'toggle' => Forms\Components\Toggle::make("config.{$field['name']}"),
+                                    'color' => Forms\Components\ColorPicker::make("config.{$field['name']}"),
+                                    'date' => Forms\Components\DatePicker::make("config.{$field['name']}"),
+                                    'datetime' => Forms\Components\DateTimePicker::make("config.{$field['name']}"),
+                                    'time' => Forms\Components\TimePicker::make("config.{$field['name']}"),
+                                    'file' => Forms\Components\FileUpload::make("config.{$field['name']}"),
+                                    'image' => Forms\Components\FileUpload::make("config.{$field['name']}")->image(),
+                                    'richeditor' => Forms\Components\RichEditor::make("config.{$field['name']}"),
+                                    'markdown' => Forms\Components\MarkdownEditor::make("config.{$field['name']}"),
+                                    'tags' => Forms\Components\TagsInput::make("config.{$field['name']}"),
+                                    'password' => Forms\Components\TextInput::make("config.{$field['name']}")->password(),
+                                    default => Forms\Components\TextInput::make("config.{$field['name']}"),
+                                };
+                    
+                                // Apply default value if specified
+                                if (isset($field['default'])) {
+                                    $component->default($field['default']);
+                                }
+                    
+                                // Apply validation rules if specified
+                                if (isset($field['validation'])) {
+                                    $component->rules($field['validation']);
+                                }
+                    
+                                return $component->label(ucfirst(str_replace('_', ' ', $field['name'])));
+                            })->toArray();
+                        })
+                        ->label('Configurations')
+                        ->maxItems(1)
+                        ->minItems(1)
+                        ->reorderable(false)
+                        ->deletable(false)
+                        ->required()
+                        ->reactive()
+                        ->defaultItems(1)
+                        ->addActionLabel('Display Fields')
+                        ->columnSpanFull(),
+                ])
+                ->columns(2)
             ]);
     }
 
@@ -97,11 +130,27 @@ class WidgetResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('type.name')->label('Widget Type'),
-                Tables\Columns\TextColumn::make('area.name')->label('Widget Area'),
-                Tables\Columns\TextColumn::make('order')->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                TextColumn::make('name')
+                ->badge()
+                ->color('success')
+                ->label('Widget'),
+                TextColumn::make('type.name')
+                ->badge()
+                ->color('success')
+                ->label('Widget Type'),
+                TextColumn::make('area.name')
+                ->badge()
+                ->color('success')
+                ->label('Widget Area'),
+                TextColumn::make('order')
+                ->badge()
+                ->color('success')
+                ->sortable(),
+                TextColumn::make('created_at')
+                    ->dateTime('d, M Y h:s A')
+                    ->badge()
+                    ->color('success')
+                    ->label('Created at'),
             ])
             ->filters([
                 //
