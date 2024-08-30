@@ -13,7 +13,12 @@ class WidgetArea extends Model
     protected $table = 'widget_areas';
 
     // Specify fillable fields to allow mass assignment
-    protected $fillable = ['name', 'identifier','order'];
+    protected $fillable = ['name', 'identifier','status','order'];
+
+    public function scopeActive($query)
+    {
+        return $query->where('status',true);
+    }
 
     public function scopeOrdered($query)
     {

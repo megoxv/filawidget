@@ -55,7 +55,7 @@
         {{-- Container for sortable items --}}
         <div id="sortable-widget-areas" class="space-y-4">
             @foreach ($widgetAreas as $key => $widgetArea)
-                <div x-data="{ expanded: false }" id="sortable-container" class="sortable-widget-area-item rounded bg-white space-y-4" data-id="{{ $widgetArea->id }}">
+                <div x-data="{ expanded: {{ $loop->first ? 'true' : 'false' }} }" id="sortable-container" class="sortable-widget-area-item rounded bg-white space-y-4" data-id="{{ $widgetArea->id }}">
                     <div class="fi-ta-header-toolbar flex items-center justify-between gap-x-4 px-4 py-4 sm:px-6" style="border-bottom: 1px solid #ddd;">
                         <div class="flex gap-3">
                             <div class="p-2 rounded-full" style="background-color: #27ae60;">

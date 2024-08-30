@@ -8,11 +8,16 @@ class Widget extends Model
 {
     protected $table = 'widgets';
 
-    protected $fillable = ['name','slug','order','fieldsIds', 'widget_area_id', 'widget_type_id'];
+    protected $fillable = ['name','slug','order','status','fieldsIds', 'widget_area_id', 'widget_type_id'];
 
     protected $casts = [
         'fieldsIds' => 'array', // Automatically cast JSON to an array
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('status',true);
+    }
 
     public function scopeOrdered($query)
     {

@@ -13,7 +13,12 @@ class ListWidgetFields extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\Action::make('appearance')
+                ->url(route('filament.admin.pages.appearance'))
+                ->icon('heroicon-o-paint-brush')
+                ->color('success')
+                ->label('Appearance'),
+            Actions\CreateAction::make()->icon('heroicon-o-plus'),
         ];
     }
 }

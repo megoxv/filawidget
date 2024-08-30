@@ -19,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -161,6 +162,8 @@ class WidgetResource extends Resource
                 SelectColumn::make('widget_area_id')
                     ->options(WidgetArea::pluck('name','id')->toArray())
                     ->label('Widget Area'),
+                ToggleColumn::make('status')
+                    ->label('Status'),
                 TextColumn::make('created_at')
                     ->dateTime('d, M Y h:s A')
                     ->badge()

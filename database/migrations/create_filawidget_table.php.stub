@@ -13,9 +13,10 @@ return new class extends Migration
             $table->string('name'); // The name of the widget area (e.g., Sidebar, Footer)
             $table->string('identifier')->unique(); // Unique identifier for the widget area (e.g., 'sidebar')
             $table->integer('order')->default(0); // Display order of the widget within its area
+            $table->boolean('status')->default(false); // Display order of the widget within its area
             $table->timestamps();
         });
-
+        
         Schema::create('widget_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -38,6 +39,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->integer('order')->default(0); // Display order of the widget within its area
+            $table->boolean('status')->default(false); // Display order of the widget within its area
             $table->foreignId('widget_area_id')->constrained('widget_areas')->onDelete('cascade');
             $table->foreignId('widget_type_id')->constrained('widget_types')->onDelete('cascade');
             $table->timestamps();

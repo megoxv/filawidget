@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -59,6 +60,8 @@ class WidgetAreaResource extends Resource
                 ->badge()
                 ->color('primary')
                 ->label('Identifier'),
+                ToggleColumn::make('status')
+                ->label('Status'),
                 TextColumn::make('created_at')
                     ->dateTime('d, M Y h:s A')
                     ->badge()
