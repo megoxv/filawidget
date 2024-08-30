@@ -1,6 +1,6 @@
 <div class="flex items-center bg-white from-blue-500 to-indigo-500 p-6 rounded-lg shadow-md">
     <!-- Left Side: Title and Description -->
-    <div class="flex-1">
+    <div class="flex-1 space-y-4">
         <h2 class="text-2xl font-bold mb-2">Managing dynamic content and layouts</h2>
         <p class="text-sm">Drag-and-drop interface to manage the order of widgets within each area, allowing for a fully customizable page layout without the need for coding.</p>
         <div class="flex gap-2 mt-2">

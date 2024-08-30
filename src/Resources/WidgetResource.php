@@ -63,11 +63,13 @@ class WidgetResource extends Resource
                             WidgetArea::pluck('name','id')->toArray()
                         )
                         ->required()
+                        ->searchable()
                         ->default(
                             request()->has('area_id') ? request()->query('area_id') : 0
                         ),
                     Select::make('widget_type_id')
                         ->label('Widget Type')
+                        ->searchable()
                         ->options(
                             WidgetType::pluck('name','id')->toArray()
                         )

@@ -34,7 +34,7 @@
         <div class="fi-header flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between py-2 mb-2">
             <div>
                 <h2 class="text-lg font-bold">Areas with their widgets.</h2>
-                <small>Change the order of areas and widgets just using Drag-and-drop.</small>
+                <small>Change the order of areas and widgets just by using Drag-and-drop.</small>
             </div>
             <div class="fi-ac gap-3 flex flex-wrap items-center justify-start shrink-0">
                 <div class="p-2 rounded-full bg-primary-500">
@@ -57,11 +57,18 @@
             @foreach ($widgetAreas as $key => $widgetArea)
                 <div x-data="{ expanded: {{ $loop->first ? 'true' : 'false' }} }" id="sortable-container" class="sortable-widget-area-item rounded bg-white space-y-4" data-id="{{ $widgetArea->id }}">
                     <div class="fi-ta-header-toolbar flex items-center justify-between gap-x-4 px-4 py-4 sm:px-6" style="border-bottom: 1px solid #ddd;">
-                        <div class="flex gap-3">
+                        <div class="flex gap-2">
                             <div class="p-2 rounded-full" style="background-color: #16a085;">
                                 <a href="{{ route('filament.admin.resources.widget-areas.edit',$widgetArea->id) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="18" height="18">
                                         <path d="M4 4L4 24C4 25.1 4.89 26 6 26L14.980469 26L15.019531 26L17.140625 26L26 17.140625L26 4L4 4 z M 12 6L18 6C18.55 6 19 6.45 19 7C19 7.55 18.55 8 18 8L12 8C11.45 8 11 7.55 11 7C11 6.45 11.45 6 12 6 z M 28.230469 18C27.780469 18 27.330469 18.169531 26.980469 18.519531L26.460938 19.039062L28.960938 21.539062L29.480469 21.019531C30.170469 20.329531 30.170469 19.209531 29.480469 18.519531C29.140469 18.169531 28.680469 18 28.230469 18 z M 25.039062 20.460938L20.509766 25L19.509766 26L18.480469 27.029297L18 30L20.980469 29.529297L24.589844 25.910156L24.599609 25.910156L25.910156 24.589844L27.539062 22.960938L26 21.419922L25.039062 20.460938 z" fill="#FFFFFF" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="p-2 rounded-full" style="background-color: #2980b9;">
+                                <a href="{{ route('filament.admin.resources.widgets.create') }}?area_id={{ $widgetArea->id }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18" height="18">
+                                        <path d="M24,4C12.972,4,4,12.972,4,24s8.972,20,20,20s20-8.972,20-20S35.028,4,24,4z M32.5,25.5h-7v7c0,0.829-0.672,1.5-1.5,1.5s-1.5-0.671-1.5-1.5v-7h-7c-0.828,0-1.5-0.671-1.5-1.5s0.672-1.5,1.5-1.5h7v-7c0-0.829,0.672-1.5,1.5-1.5s1.5,0.671,1.5,1.5v7h7c0.828,0,1.5,0.671,1.5,1.5S33.328,25.5,32.5,25.5z" fill="#FFFFFF" />
                                     </svg>
                                 </a>
                             </div>
