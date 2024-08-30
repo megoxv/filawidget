@@ -6,6 +6,7 @@ use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource\Pages;
 use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource\RelationManagers;
 use IbrahimBougaoua\Filawidget\Models\Field;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -35,36 +36,41 @@ class WidgetFieldResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Field Name')
-                    ->required(),
-    
+                Section::make()
+                ->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->label('Field Name')
+                        ->required(),
+        
                     Forms\Components\Select::make('type')
-                    ->label('Field Type')
-                    ->options([
-                        'text' => 'Text',
-                        'textarea' => 'Textarea',
-                        'number' => 'Number',
-                        'select' => 'Select',
-                        'checkbox' => 'Checkbox',
-                        'radio' => 'Radio',
-                        'toggle' => 'Toggle',
-                        'color' => 'Color Picker',
-                        'date' => 'Date Picker',
-                        'datetime' => 'Date Time Picker',
-                        'time' => 'Time Picker',
-                        'file' => 'File Upload',
-                        'image' => 'Image Upload',
-                        'richeditor' => 'Rich Editor',
-                        'markdown' => 'Markdown Editor',
-                        'tags' => 'Tags Input',
-                        'password' => 'Password',
-                    ])
-                    ->required(),
-    
-                Forms\Components\Textarea::make('options')
-                    ->label('Options')
-                    ->helperText('Provide additional options in JSON format (e.g., {"default": "value", "validation": "required|max:255"})'),
+                        ->label('Field Type')
+                        ->options([
+                            'text' => 'Text',
+                            'textarea' => 'Textarea',
+                            'number' => 'Number',
+                            'select' => 'Select',
+                            'checkbox' => 'Checkbox',
+                            'radio' => 'Radio',
+                            'toggle' => 'Toggle',
+                            'color' => 'Color Picker',
+                            'date' => 'Date Picker',
+                            'datetime' => 'Date Time Picker',
+                            'time' => 'Time Picker',
+                            'file' => 'File Upload',
+                            'image' => 'Image Upload',
+                            'richeditor' => 'Rich Editor',
+                            'markdown' => 'Markdown Editor',
+                            'tags' => 'Tags Input',
+                            'password' => 'Password',
+                        ])
+                        ->required(),
+        
+                    Forms\Components\Textarea::make('options')
+                        ->label('Options')
+                        ->helperText('Provide additional options in JSON format (e.g., {"default": "value", "validation": "required|max:255"})')
+                        ->columnSpanFull(),
+                ])
+                ->columns(2),
             ]);
     }
 

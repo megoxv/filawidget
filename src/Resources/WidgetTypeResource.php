@@ -49,8 +49,7 @@ class WidgetTypeResource extends Resource
                 ->schema([
                     TextInput::make('name')
                         ->label('Name')
-                        ->required()
-                        ->columnSpanFull(),
+                        ->required(),
                     Select::make('fieldsIds')
                         ->label('Fields')
                         ->options(
@@ -58,8 +57,7 @@ class WidgetTypeResource extends Resource
                         )
                         ->multiple()
                         ->reactive()
-                        ->required()
-                        ->columnSpanFull(),
+                        ->required(),
                     Repeater::make('fields')
                         ->schema(function (callable $get) {
                             
@@ -101,18 +99,19 @@ class WidgetTypeResource extends Resource
 
                                 return $component->label(ucfirst(str_replace('_', ' ', $field['name'])));
                             })->toArray();
-                        })
-                        ->label('Configurations')
-                        ->maxItems(1)
-                        ->minItems(1)
-                        ->reorderable(false)
-                        ->deletable(false)
-                        ->required()
-                        ->reactive()
-                        ->defaultItems(1)
-                        ->addActionLabel('Display Fields')
-                        ->columnSpanFull(),
-                    ])
+                    })
+                    ->label('Configurations')
+                    ->maxItems(1)
+                    ->minItems(1)
+                    ->reorderable(false)
+                    ->deletable(false)
+                    ->required()
+                    ->reactive()
+                    ->defaultItems(1)
+                    ->addActionLabel('Display Fields')
+                    ->columnSpanFull(),
+                ])
+                ->columns(2)
             ]);
     }
 

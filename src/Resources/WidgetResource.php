@@ -14,6 +14,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -61,7 +62,10 @@ class WidgetResource extends Resource
                         ->options(
                             WidgetArea::pluck('name','id')->toArray()
                         )
-                        ->required(),
+                        ->required()
+                        ->default(
+                            request()->has('area_id') ? request()->query('area_id') : 0
+                        ),
                     Select::make('widget_type_id')
                         ->label('Widget Type')
                         ->options(
@@ -76,25 +80,45 @@ class WidgetResource extends Resource
                         })
                         ->reactive()
                         ->required(),
+                    Toggle::make('status')
+                        ->label('Status'),
                     Hidden::make('fieldsIds')
                     ->reactive(),
                     Repeater::make('values')
                     ->schema(function (callable $get) {
 
-                        // Fetch fields configuration from the database
-                        $fields = WidgetsField::whereIn('id', $get('fieldsIds'))
-                            ->get(['fields.name', 'fields.type', 'fields.options', 'fields.id'])
-                            ->toArray();
+                        // Ensure 'fieldsIds' is not null and is an array
+                        $fieldsIds = $get('fieldsIds') ?? []; // Default to an empty array if null
 
-                        // Fetch existing values from the database for a specific widget (assuming widget_id is 1 here)
-                        $values = WidgetField::where('widget_id', $get('id'))
-                            ->whereIn('widget_field_id', $get('fieldsIds'))
-                            ->get(['widget_field_id', 'value'])
-                            ->pluck('value', 'widget_field_id') // Pluck values with field id as key
-                            ->toArray();
+                        // Ensure 'id' is not null
+                        $widgetId = $get('id') ?? null; // Set to null if not provided
+
+                        // Fetch fields configuration from the database only if fieldsIds is not empty
+                        $fields = [];
+                        if (is_array($fieldsIds) && count($fieldsIds) > 0) {
+                            $fields = WidgetsField::whereIn('id', $fieldsIds)
+                                ->get(['fields.name', 'fields.type', 'fields.options', 'fields.id'])
+                                ->toArray();
+                        }
+
+                        // Fetch existing values from the database for a specific widget only if widgetId is not null
+                        $values = [];
+                        if (!is_null($widgetId) && is_array($fieldsIds) && count($fieldsIds) > 0) {
+                            $values = WidgetField::where('widget_id', $widgetId)
+                                ->whereIn('widget_field_id', $fieldsIds)
+                                ->get(['widget_field_id', 'value'])
+                                ->pluck('value', 'widget_field_id') // Pluck values with field id as key
+                                ->toArray();
+                        }
 
                         // Map the fields to generate form components dynamically
                         return collect($fields)->map(function ($field) use ($values) {
+
+                            // Decode the options JSON string into an associative array
+                            $options = json_decode($field['options'], true);
+
+                            // Extract the default value from the options or use an empty string if not set
+                            $defaultValue = $options['default'] ?? '';
 
                             $component = match ($field['type']) {
                                 'text' => Forms\Components\TextInput::make($field['name']),
@@ -120,8 +144,8 @@ class WidgetResource extends Resource
                             };
 
                             // Apply the default value from the existing values or set it to empty if not found
-                            $component->default($values[$field['id']] ?? '');
-
+                            $component->default($values[$field['id']] ?? $defaultValue);
+                            
                             // Apply validation rules if specified
                             if (isset($field['validation'])) {
                                 $component->rules($field['validation']);
@@ -141,7 +165,7 @@ class WidgetResource extends Resource
                     ->reactive()
                     ->defaultItems(1)
                     ->addActionLabel('Display Fields')
-                    ->columnSpanFull()
+                    ->columnSpanFull(),
                 ])
                 ->columns(2)
             ]);

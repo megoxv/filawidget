@@ -6,6 +6,7 @@ use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\Pages;
 use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\RelationManagers;
 use IbrahimBougaoua\Filawidget\Models\WidgetArea;
 use Filament\Forms;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -45,6 +46,8 @@ class WidgetAreaResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->helperText('This identifier is used to reference the widget area in your code.')
                     ->required(),
+                Toggle::make('status')
+                    ->label('Status'),
             ]);
     }
 

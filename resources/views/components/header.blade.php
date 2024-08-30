@@ -22,7 +22,7 @@
     <!-- Right Side: Image -->
     <div class="flex-shrink-0">
         <div class="relative overflow-hidden bg-white rounded-full w-24 h-24 p-2 shadow-lg">
-            <div class="w-full h-full object-cover rounded-full">
+            <div class="w-full h-full object-cover rounded-full m-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="80" height="80">
                     <linearGradient id="3hRsBrOrYAqussVluy7dra" x1="3.998" x2="18.526" y1="-1929.146" y2="-1929.146" gradientTransform="matrix(1 0 0 -1 .482 -1892.593)" gradientUnits="userSpaceOnUse">
                       <stop offset="0" stop-color="#fed100" />
