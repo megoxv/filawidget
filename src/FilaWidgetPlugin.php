@@ -4,11 +4,14 @@ namespace IbrahimBougaoua\Filawidget;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use IbrahimBougaoua\Filawidget\Pages\Appearance;
 use IbrahimBougaoua\Filawidget\Resources\WidgetResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetTypeResource;
+use Illuminate\View\View;
 
 class FilaWidgetPlugin implements Plugin
 {
@@ -38,6 +41,9 @@ class FilaWidgetPlugin implements Plugin
  
     public function boot(Panel $panel): void
     {
-        //
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::TOPBAR_START,
+            fn (): View => view('filawidget::components.quick'),
+        );
     }
 }
