@@ -1,28 +1,22 @@
 <div class="flex items-center bg-white from-blue-500 to-indigo-500 p-6 rounded-lg shadow-md">
-    <!-- Left Side: Title and Description -->
     <div class="flex-1">
-        <h2 class="text-2xl font-bold mb-2">Managing dynamic content and layouts</h2>
-        <p class="text-sm">Drag-and-drop interface to manage the order of widgets within each area, allowing for a fully customizable page layout without the need for coding.</p>
         <div class="flex gap-2 mt-2">
-            <a href="{{ route('filament.admin.resources.widgets.index') }}" class="px-4 text-sm text-white btn-sm p-2 rounded hover:bg-blue-600" style="background: #27ae60;">
-                Widgets
-            </a>
-            <a href="{{ route('filament.admin.resources.widget-areas.index') }}" class="px-4 text-sm text-white btn-sm p-2 rounded hover:bg-blue-600" style="background: #2980b9;">
-                Widget Areas
-            </a>
-            <a href="{{ route('filament.admin.resources.widget-fields.index') }}" class="px-4 text-sm text-white btn-sm p-2 rounded hover:bg-blue-600" style="background: #8e44ad;">
-                Fields
-            </a>
-            <a href="{{ route('filament.admin.resources.widget-types.index') }}" class="px-4 text-sm text-white btn-sm p-2 rounded hover:bg-blue-600" style="background: #2c3e50;">
-                Widget Types
-            </a>
+            <div class="p-2 rounded-full bg-primary-500">
+                <a href="/" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="25" height="25">
+                        <path d="M15 5C6 5 0.19726562 14.408203 0.19726562 14.408203L0.19726562 14.435547C0.082350414 14.598369 0 14.7857 0 15C0 15.192109 0.068085697 15.361256 0.16210938 15.513672L0.16210938 15.544922C0.16110937 15.544922 5 25 15 25C25 25 29.837891 15.544922 29.837891 15.544922L29.837891 15.513672C29.931914 15.361256 30 15.192109 30 15C30 14.7857 29.91765 14.598369 29.802734 14.435547L29.802734 14.408203C29.802734 14.408203 24 5 15 5 z M 15 8C18.866 8 22 11.134 22 15C22 18.866 18.866 22 15 22C11.134 22 8 18.866 8 15C8 11.134 11.134 8 15 8 z M 15 12C13.343 12 12 13.343 12 15C12 16.657 13.343 18 15 18C16.657 18 18 16.657 18 15C18 13.343 16.657 12 15 12 z" fill="#FFFFFF" />
+                    </svg>
+                </a>
+            </div>
         </div>
     </div>
-    
-    <!-- Right Side: Image -->
     <div class="flex-shrink-0">
-        <div class="relative overflow-hidden bg-white rounded-full w-24 h-24 p-2 shadow-lg">
-            <img src="https://via.placeholder.com/100" alt="Sample Image" class="w-full h-full object-cover rounded-full">
+        <div class="fi-ac gap-3 flex flex-wrap items-center justify-start shrink-0">
+            <button wire:click="updateOrder" class="px-4 py-2 bg-primary text-white rounded hover:bg-blue-600" style="background: #19a5a1;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="25" height="25">
+                    <path d="M6 4C4.895 4 4 4.895 4 6L4 24C4 25.105 4.895 26 6 26L24 26C25.105 26 26 25.105 26 24L26 8L22 4L20 4L20 10C20 10.552 19.552 11 19 11L10 11C9.448 11 9 10.552 9 10L9 4L6 4 z M 16 4L16 9L18 9L18 4L16 4 z M 10 16L20 16C21.105 16 22 16.895 22 18L22 24L8 24L8 18C8 16.895 8.895 16 10 16 z" fill="#FFFDFD" />
+                </svg>
+            </button>
         </div>
     </div>
 </div>
