@@ -27,6 +27,6 @@ class Field extends Model
      */
     public function widgets()
     {
-        return $this->belongsToMany(Widget::class, 'widget_fields', 'field_id', 'widget_id');
+        return $this->belongsToMany(Widget::class, 'widget_fields', 'widget_field_id', 'widget_id');
     }
 }

@@ -57,7 +57,7 @@ class WidgetAreaResource extends Resource
                 ->label('Area Name'),
                 TextColumn::make('identifier')
                 ->badge()
-                ->color('success')
+                ->color('primary')
                 ->label('Identifier'),
                 TextColumn::make('created_at')
                     ->dateTime('d, M Y h:s A')
@@ -69,13 +69,16 @@ class WidgetAreaResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(fn (Builder $query) => $query->ordered());
     }
 
     public static function getRelations(): array

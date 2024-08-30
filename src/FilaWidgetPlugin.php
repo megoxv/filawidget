@@ -4,6 +4,7 @@ namespace IbrahimBougaoua\Filawidget;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use IbrahimBougaoua\Filawidget\Pages\Appearance;
 use IbrahimBougaoua\Filawidget\Resources\WidgetResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource;
@@ -31,7 +32,7 @@ class FilaWidgetPlugin implements Plugin
                 WidgetTypeResource::class,
             ])
             ->pages([
-
+                Appearance::class,
             ]);
     }
  

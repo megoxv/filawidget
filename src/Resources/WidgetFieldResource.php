@@ -72,10 +72,6 @@ class WidgetFieldResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('type.name')
-                ->badge()
-                ->color('success')
-                ->label('Widget Type'),
                 TextColumn::make('name')
                 ->badge()
                 ->color('success')
@@ -84,6 +80,11 @@ class WidgetFieldResource extends Resource
                 ->badge()
                 ->color('success')
                 ->label('Field Type'),
+                TextColumn::make('widgets_count')
+                ->counts('widgets')
+                ->badge()
+                ->color('success')
+                ->label('Used'),
                 TextColumn::make('created_at')
                     ->dateTime('d, M Y h:s A')
                     ->badge()
@@ -94,7 +95,9 @@ class WidgetFieldResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

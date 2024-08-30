@@ -12,15 +12,16 @@ return new class extends Migration
             $table->id();
             $table->string('name'); // The name of the widget area (e.g., Sidebar, Footer)
             $table->string('identifier')->unique(); // Unique identifier for the widget area (e.g., 'sidebar')
+            $table->integer('order')->default(0); // Display order of the widget within its area
             $table->timestamps();
         });
 
         Schema::create('widget_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
             $table->json('config')->nullable(); // Configuration options for the widget
             $table->text('fieldsIds')->nullable(); // Display order of the widget within its area
-            $table->integer('order')->default(0); // Display order of the widget within its area
             $table->timestamps();
         });
 
@@ -36,16 +37,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->integer('order')->default(0); // Display order of the widget within its area
             $table->foreignId('widget_area_id')->constrained('widget_areas')->onDelete('cascade');
             $table->foreignId('widget_type_id')->constrained('widget_types')->onDelete('cascade');
             $table->timestamps();
         });
 
         Schema::create('widget_fields', function (Blueprint $table) {
-            $table->id();
+            $table->longText('value')->nullable();
             $table->foreignId('widget_id')->constrained('widgets')->onDelete('cascade');
             $table->foreignId('widget_field_id')->constrained('fields')->onDelete('cascade');
-            $table->timestamps();
+            $table->primary(['widget_id', 'widget_field_id']);
         });
     }
 

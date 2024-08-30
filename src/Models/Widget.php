@@ -8,18 +8,30 @@ class Widget extends Model
 {
     protected $table = 'widgets';
 
-    protected $fillable = ['name', 'widget_area_id', 'widget_type_id','fieldsIds'];
+    protected $fillable = ['name','slug','order','fieldsIds', 'widget_area_id', 'widget_type_id'];
 
     protected $casts = [
         'fieldsIds' => 'array', // Automatically cast JSON to an array
     ];
 
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order');
+    }
+
+    public static function updateOrder(array $order)
+    {
+        foreach ($order as $index => $id) {
+            self::where('id', $id)->update(['order' => $index + 1]);
+        }
+    }
+    
     /**
      * Get the widget area that owns the widget.
      */
     public function area()
     {
-        return $this->belongsTo(WidgetArea::class);
+        return $this->belongsTo(WidgetArea::class,'widget_area_id');
     }
 
     /**
@@ -27,7 +39,12 @@ class Widget extends Model
      */
     public function type()
     {
-        return $this->belongsTo(WidgetType::class);
+        return $this->belongsTo(WidgetType::class,'widget_type_id');
+    }
+
+    public function values()
+    {
+        return $this->hasMany(WidgetField::class);
     }
     
     /**
