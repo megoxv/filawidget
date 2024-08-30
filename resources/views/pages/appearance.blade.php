@@ -57,8 +57,15 @@
             @foreach ($widgetAreas as $key => $widgetArea)
                 <div x-data="{ expanded: false }" id="sortable-container" class="sortable-widget-area-item rounded bg-white space-y-4" data-id="{{ $widgetArea->id }}">
                     <div class="fi-ta-header-toolbar flex items-center justify-between gap-x-4 px-4 py-4 sm:px-6" style="border-bottom: 1px solid #ddd;">
-                        <div>
-                            <p>{{ $widgetArea->name }} ({{ $widgetArea->widgets ? $widgetArea->widgets->count() : 0 }})</p>
+                        <div class="flex gap-3">
+                            <div class="p-2 rounded-full" style="background-color: #27ae60;">
+                                <a href="{{ route('filament.admin.resources.widget-areas.edit',$widgetArea->id) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 523 523" width="18" height="18">
+                                        <path d="M103.4 404.5c-3.9 9.5 5.6 19 15.1 15.1l28.5-11.7-31.8-31.8L103.4 404.5zM140.6 325.1c9.5 9.5 6.4 25.5 6.4 25.5l8.1 2.7c6.9 2.3 12.3 7.7 14.6 14.6l2.7 8.1c0 0 19.1 0 25.5 6.4l152.7-152.7L299.7 166 140.6 325.1zM405.8 117.2c-22.3-22.3-44.5-12.7-44.5-12.7l-29.8 29.8 57.3 57.3 29.8-29.8C418.6 161.7 428.1 139.4 405.8 117.2z" fill="#FFFFFF" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <p style="line-height: 2;">{{ $widgetArea->name }} ({{ $widgetArea->widgets ? $widgetArea->widgets->count() : 0 }})</p>
                         </div>
                         <div @click="expanded = ! expanded" class="cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
@@ -112,7 +119,7 @@
                                                 Create New Widget
                                             </span>
                                         </a>
-                                        <a href="{{ route('filament.admin.resources.widgets.index') }}" style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);" class="fi-btn relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action">  
+                                        <a href="{{ route('filament.admin.resources.widgets.index') }}" style="background: #19a5a1;" class="fi-btn relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action">  
                                             <svg class="fi-btn-icon transition duration-75 h-5 w-5 text-white" fill="currentColor" aria-hidden="true" data-slot="icon">
                                                 <path d="M7 4.5 A 2.5 2.5 0 0 0 4.5 7 A 2.5 2.5 0 0 0 7 9.5 A 2.5 2.5 0 0 0 9.5 7 A 2.5 2.5 0 0 0 7 4.5 z M 15 4.5 A 2.5 2.5 0 0 0 12.5 7 A 2.5 2.5 0 0 0 15 9.5 A 2.5 2.5 0 0 0 17.5 7 A 2.5 2.5 0 0 0 15 4.5 z M 23 4.5 A 2.5 2.5 0 0 0 20.5 7 A 2.5 2.5 0 0 0 23 9.5 A 2.5 2.5 0 0 0 25.5 7 A 2.5 2.5 0 0 0 23 4.5 z M 7 12.5 A 2.5 2.5 0 0 0 4.5 15 A 2.5 2.5 0 0 0 7 17.5 A 2.5 2.5 0 0 0 9.5 15 A 2.5 2.5 0 0 0 7 12.5 z M 15 12.5 A 2.5 2.5 0 0 0 12.5 15 A 2.5 2.5 0 0 0 15 17.5 A 2.5 2.5 0 0 0 17.5 15 A 2.5 2.5 0 0 0 15 12.5 z M 23 12.5 A 2.5 2.5 0 0 0 20.5 15 A 2.5 2.5 0 0 0 23 17.5 A 2.5 2.5 0 0 0 25.5 15 A 2.5 2.5 0 0 0 23 12.5 z M 7 20.5 A 2.5 2.5 0 0 0 4.5 23 A 2.5 2.5 0 0 0 7 25.5 A 2.5 2.5 0 0 0 9.5 23 A 2.5 2.5 0 0 0 7 20.5 z M 15 20.5 A 2.5 2.5 0 0 0 12.5 23 A 2.5 2.5 0 0 0 15 25.5 A 2.5 2.5 0 0 0 17.5 23 A 2.5 2.5 0 0 0 15 20.5 z M 23 20.5 A 2.5 2.5 0 0 0 20.5 23 A 2.5 2.5 0 0 0 23 25.5 A 2.5 2.5 0 0 0 25.5 23 A 2.5 2.5 0 0 0 23 20.5 z" fill="#FFFFFF" />
                                             </svg> 

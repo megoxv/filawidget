@@ -9,7 +9,7 @@ use Illuminate\View\View;
 
 class Appearance extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-paint-brush';
 
     protected static string $view = 'filawidget::pages.appearance';
 
@@ -67,5 +67,10 @@ class Appearance extends Page
     public function getHeader(): ?View
     {
         return view('filawidget::components.header');
+    }
+
+    public function getFooter(): ?View
+    {
+        return view('filawidget::components.footer');
     }
 }

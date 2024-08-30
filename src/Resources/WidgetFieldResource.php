@@ -18,7 +18,7 @@ class WidgetFieldResource extends Resource
 {
     protected static ?string $model = Field::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-plus';
 
     public static function shouldRegisterNavigation(): bool
     {

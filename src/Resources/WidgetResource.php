@@ -32,7 +32,7 @@ class WidgetResource extends Resource
 {
     protected static ?string $model = Widget::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
 
     public static function shouldRegisterNavigation(): bool
     {
