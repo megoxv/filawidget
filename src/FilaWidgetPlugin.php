@@ -15,6 +15,7 @@ use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetResource\Widgets\WidgetStatsOverview;
 use IbrahimBougaoua\Filawidget\Resources\WidgetTypeResource;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Route;
 
 class FilaWidgetPlugin implements Plugin
 {
@@ -54,10 +55,13 @@ class FilaWidgetPlugin implements Plugin
             fn (): View => view('filawidget::components.home'),
         );
 
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::CONTENT_START,
-            fn (): View => view('filawidget::components.filter'),
-        );
+        if(Route::currentRouteName() === 'filament.admin.pages.appearance')
+        {
+            FilamentView::registerRenderHook(
+                PanelsRenderHook::CONTENT_START,
+                fn (): View => view('filawidget::components.filter'),
+            );
+        }
 
         FilamentView::registerRenderHook( 
             PanelsRenderHook::TOPBAR_START,

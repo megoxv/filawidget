@@ -113,7 +113,9 @@ class Appearance extends Page
 
     public function getHeader(): ?View
     {
-        return $this->filter == 'widgets' ? view('filawidget::components.header') : null;
+        return view('filawidget::components.header',[
+            'filter' => $this->filter,
+        ]);
     }
 
     public function getFooter(): ?View

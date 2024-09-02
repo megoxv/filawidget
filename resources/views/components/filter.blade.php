@@ -34,7 +34,17 @@
             'bg-white' => !(request()->query('filter') === 'widgets' || !request()->has('filter')),
            ])
            >
-            Widgets
+            @if(request()->query('filter') === 'widgets')
+                <div class="flex gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="25" height="25">
+                        <path d="M36.5,6h-25C8.468,6,6,8.468,6,11.5v25c0,3.032,2.468,5.5,5.5,5.5h25c3.032,0,5.5-2.468,5.5-5.5v-25C42,8.468,39.532,6,36.5,6z M35.561,18.561l-14,14C21.268,32.854,20.884,33,20.5,33s-0.768-0.146-1.061-0.439l-6-6c-0.586-0.586-0.586-1.535,0-2.121s1.535-0.586,2.121,0l4.939,4.939l12.939-12.939c0.586-0.586,1.535-0.586,2.121,0S36.146,17.975,35.561,18.561z" fill="#FFFFFF" />
+                    </svg>
+                    Widgets
+                </div>
+            @else
+                Widgets
+            @endif
+            
         </a>
         <a href="{{ request()->query('filter') === 'pages' ? '#' : '?filter=pages' }}" 
            @class([
@@ -43,7 +53,16 @@
             'bg-white' => !request()->has('filter') || request()->query('filter') !== 'pages',
             ])
            >
-            Pages
+            @if(request()->query('filter') === 'pages')
+                <div class="flex gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="25" height="25">
+                        <path d="M36.5,6h-25C8.468,6,6,8.468,6,11.5v25c0,3.032,2.468,5.5,5.5,5.5h25c3.032,0,5.5-2.468,5.5-5.5v-25C42,8.468,39.532,6,36.5,6z M35.561,18.561l-14,14C21.268,32.854,20.884,33,20.5,33s-0.768-0.146-1.061-0.439l-6-6c-0.586-0.586-0.586-1.535,0-2.121s1.535-0.586,2.121,0l4.939,4.939l12.939-12.939c0.586-0.586,1.535-0.586,2.121,0S36.146,17.975,35.561,18.561z" fill="#FFFFFF" />
+                    </svg>
+                    Pages
+                </div>
+            @else
+                Pages
+            @endif
         </a>
     </div>
 </div>
