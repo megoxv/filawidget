@@ -7,6 +7,7 @@ use Filament\Panel;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use IbrahimBougaoua\Filawidget\Pages\Appearance;
+use IbrahimBougaoua\Filawidget\Resources\PageResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\Widgets\WidgetAreaStatsOverview;
@@ -31,6 +32,7 @@ class FilaWidgetPlugin implements Plugin
     {
         $panel
             ->resources([
+                PageResource::class,
                 WidgetResource::class,
                 WidgetAreaResource::class,
                 WidgetFieldResource::class,
@@ -50,6 +52,11 @@ class FilaWidgetPlugin implements Plugin
         FilamentView::registerRenderHook(
             PanelsRenderHook::USER_MENU_BEFORE,
             fn (): View => view('filawidget::components.home'),
+        );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::CONTENT_START,
+            fn (): View => view('filawidget::components.filter'),
         );
 
         FilamentView::registerRenderHook( 

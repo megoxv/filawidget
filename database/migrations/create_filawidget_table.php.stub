@@ -8,6 +8,18 @@ return new class extends Migration
 {
     public function up()
     {
+        Schema::create('pages', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('content')->nullable();
+            $table->integer('order')->default(0);
+            $table->integer('child_order')->default(0);
+            $table->boolean('status')->default(false);
+            $table->foreignId('parent_id')->nullable()->constrained('pages')->onDelete('cascade');
+            $table->timestamps();
+        });
+        
         Schema::create('widget_areas', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // The name of the widget area (e.g., Sidebar, Footer)

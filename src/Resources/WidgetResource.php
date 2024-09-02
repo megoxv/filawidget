@@ -65,7 +65,7 @@ class WidgetResource extends Resource
                         ->required()
                         ->searchable()
                         ->default(
-                            request()->has('area_id') ? request()->query('area_id') : 0
+                            request()->has('area_id') ? request()->query('area_id') : null
                         ),
                     Select::make('widget_type_id')
                         ->label('Widget Type')
