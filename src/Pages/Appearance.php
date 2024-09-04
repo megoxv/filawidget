@@ -6,6 +6,7 @@ use Filament\Pages\Page;
 use IbrahimBougaoua\Filawidget\Models\Page as ModelsPage;
 use IbrahimBougaoua\Filawidget\Models\Widget;
 use IbrahimBougaoua\Filawidget\Models\WidgetArea;
+use IbrahimBougaoua\Filawidget\Services\AreaService;
 use IbrahimBougaoua\Filawidget\Services\PageService;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ class Appearance extends Page
     public $widgetsOrder = [];
     public $widgetAreasOrder = [];
     public $pages = [];
+    public $areas = [];
     public $widgets = [];
     public $widgetAreas = [];
     public $nbrWidgetAreas = 0;
@@ -39,6 +41,7 @@ class Appearance extends Page
 
         // Get ordered widgets from the database
         $this->pages = PageService::getAllPages();
+        $this->areas =  AreaService::getAllAreas();
         $this->widgets = Widget::ordered()->get();
         $this->widgetAreas = WidgetArea::ordered()->withOrderedWidgets()->get();
         $this->nbrWidgetAreas = $this->widgetAreas ? count($this->widgetAreas) : 0;
@@ -120,6 +123,6 @@ class Appearance extends Page
 
     public function getFooter(): ?View
     {
-        return view('filawidget::components.footer');
+        return $this->filter !== "preview" ? view('filawidget::components.footer') : null;
     }
 }

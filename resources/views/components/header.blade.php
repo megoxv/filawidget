@@ -39,10 +39,15 @@
                 </a>
             </div>
         </div>
-    @else
+    @elseif($filter == "pages")
         <div class="flex-1 space-y-4">
             <h2 class="text-2xl font-bold mb-2">Managing pages and subpages</h2>
             <p class="text-sm">Drag-and-drop interface to manage the order of managing page and subpages, allowing for a fully customizable page layout without the need for coding.</p>
+        </div>
+    @else
+        <div class="flex-1 space-y-4">
+            <h2 class="text-2xl font-bold mb-2">Preview areas and widgets</h2>
+            <p class="text-sm">Drag-and-drop interface to manage the order of widgets within each area, allowing for a fully customizable page layout without the need for coding.</p>
         </div>
     @endif
     

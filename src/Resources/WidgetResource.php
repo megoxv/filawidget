@@ -159,11 +159,8 @@ class WidgetResource extends Resource
 
                     })
                     ->label('Configurations')
-                    ->maxItems(1)
-                    ->minItems(1)
                     ->reorderable(false)
                     ->deletable(false)
-                    ->required()
                     ->reactive()
                     ->defaultItems(1)
                     ->addActionLabel('Display Fields')

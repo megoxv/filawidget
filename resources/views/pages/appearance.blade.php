@@ -1,5 +1,43 @@
 <x-filament-panels::page>
-    @if ($filter === 'widgets')
+    @if ($filter === 'preview')
+        
+        <div class="bg-white rounded-md">
+            <div class="container mx-auto mt-6 px-0">
+                <!-- Widget Areas -->
+                @foreach ($areas as $area)
+                    <div class="mb-4 bg-white rounded-lg shadow-sm border">
+                        <h1 class="text-left text-white font-bold p-3 bg-gray-100 rounded-lg" style="background-color: #34495e;">
+                            {{ $area->name }} ({{ count($area->widgets) ?? 0 }})
+                        </h1>
+                        <div class='py-4 px-4 space-y-3'>
+                            @forelse ($area->widgets as $widget)
+                                <div class="w-full border rounded">
+                                    <!-- Tailwind Card Component -->
+                                    <div class="shadow rounded-lg widget-card">
+                                        <div class="bg-gray-100 p-4 text-center rounded-lg">
+                                            <p class="text-gray-700 font-bold">
+                                                {{ $widget->name }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="col-12 border rounded">
+                                    <!-- Tailwind Card Component -->
+                                    <div class="bg-white shadow rounded-lg widget-card">
+                                        <div class="p-4 bg-gray-100 text-center">
+                                            <p class="text-gray-700 font-bold">No Widget Found</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+    @elseif ($filter === 'widgets')
         <div class="pb-4">
 
             @if (session('areaStatus'))
@@ -39,7 +77,7 @@
                 </div>
                 <div class="fi-ac gap-3 flex flex-wrap items-center justify-start shrink-0">
                     <div class="p-2 rounded-full bg-primary-500">
-                        <a href="/" target="_blank">
+                        <a href="?filter=preview">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="25" height="25">
                                 <path d="M15 5C6 5 0.19726562 14.408203 0.19726562 14.408203L0.19726562 14.435547C0.082350414 14.598369 0 14.7857 0 15C0 15.192109 0.068085697 15.361256 0.16210938 15.513672L0.16210938 15.544922C0.16110937 15.544922 5 25 15 25C25 25 29.837891 15.544922 29.837891 15.544922L29.837891 15.513672C29.931914 15.361256 30 15.192109 30 15C30 14.7857 29.91765 14.598369 29.802734 14.435547L29.802734 14.408203C29.802734 14.408203 24 5 15 5 z M 15 8C18.866 8 22 11.134 22 15C22 18.866 18.866 22 15 22C11.134 22 8 18.866 8 15C8 11.134 11.134 8 15 8 z M 15 12C13.343 12 12 13.343 12 15C12 16.657 13.343 18 15 18C16.657 18 18 16.657 18 15C18 13.343 16.657 12 15 12 z" fill="#FFFFFF" />
                             </svg>
