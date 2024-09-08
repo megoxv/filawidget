@@ -36,20 +36,31 @@
 - **Customizable Widget and Page Orders**: Users can update the order of widgets, pages, and widget areas. Each item can be repositioned dynamically, offering complete control over the structure.
 - **Automated Order Updates**: Use the built-in functionality to update the order of widgets and pages across the system automatically.
 
-### Comprehensive Observers
-- **Model Observers**: The package uses Laravel model observers to handle model events efficiently. Observers are registered for widgets, pages, and widget areas to monitor events like creation, updates, and deletion.
+<br />
 
-### FilamentPHP Integration
-- **Seamless Integration with FilamentPHP**: The package extends FilamentPHP’s functionality, ensuring a smooth user experience through custom Filament resources, widgets, and pages. Filawidget is designed to work natively within the FilamentPHP ecosystem.
-- **Resource Management**: Manage widgets, widget types, fields, and pages directly from the Filament admin panel with ease.
+<div align="center">
+    <h1>Widgets</h1>
+</div>
 
-### Customization and Extensibility
-- **Custom Blade Components**: Easily integrate custom Blade components for widgets and fields, allowing developers to extend the package with new functionality.
-- **Configuration Flexibility**: The package offers configuration files that can be published, allowing developers to tweak settings according to their project requirements.
+[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/widgets.png" width="100%">](https://www.youtube.com/@IbrahimBougaoua)
 
-### Localization Support
-- **Multi-Language Support**: The package is ready for localization, allowing users to easily translate interface elements, making it adaptable for multi-language projects.
+<div align="center">
+    <h1>Pages</h1>
+</div>
 
+[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/pages.png" width="100%">](https://www.youtube.com/@IbrahimBougaoua)
+
+<div align="center">
+    <h1>Preview</h1>
+</div>
+
+[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/preview.png" width="100%">](https://www.youtube.com/@IbrahimBougaoua)
+
+<div align="center">
+    <h1>Frontend</h1>
+</div>
+
+[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/frontend.png" width="100%">](https://www.youtube.com/@IbrahimBougaoua)
 
 ## Installation
 
@@ -96,29 +107,30 @@ php artisan vendor:publish --tag="filawidget-views"
 ## Usage
 
 ```php
+// Areas
 use IbrahimBougaoua\Filawidget\Services\AreaService;
 
 $areas = AreaService::getAllAreas();
-$areas = AreaService::getAllAreasWithOrderedWidgets();
-$areas = AreaService::getWidgetByIdentifier("Sidebar");
+$areasWithOrderedWidgets = AreaService::getAllAreasWithOrderedWidgets();
+$area = AreaService::getWidgetByIdentifier("Sidebar");
 ```
 
 ```php
+// Widgets
 use IbrahimBougaoua\Filawidget\Services\WidgetService;
 
 $widgets = WidgetService::getAllWidgets();
-$widgets = WidgetService::getWidgetBySlug("latest-posts");
+$widget = WidgetService::getWidgetBySlug("latest-posts");
 ```
 
 ```php
+// Pages
 use IbrahimBougaoua\Filawidget\Services\PageService;
 
 $pages = PageService::getAllPages();
-$pages = PageService::getPageBySlug("about-us");
-$pages = PageService::counts();
+$page = PageService::getPageBySlug("about-us");
+$counts = PageService::counts();
 ```
-
-## Frontend
 
 ```php
 use IbrahimBougaoua\Filawidget\Services\AreaService;
