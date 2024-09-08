@@ -21,7 +21,7 @@ class WidgetAreaStatsOverview extends BaseWidget
         
         return [
             Stat::make(__('filawidget::filawidget.Total Widget Areas'), $totalWidgetAreas)
-                ->description(__('filawidget::filawidget.WidgTotal number of widget areas createdet Area'))
+                ->description(__('filawidget::filawidget.Wide Total number of widget areas created Area'))
                 ->color('primary'),
             Stat::make(__('filawidget::filawidget.Active Widget Areas'), $activeWidgetAreas)
                 ->description(__('filawidget::filawidget.Number of active widget areas'))

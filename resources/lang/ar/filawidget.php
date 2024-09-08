@@ -69,4 +69,5 @@ return [
     'Inactive Widget Areas' => 'مناطق الأدوات غير النشطة',
     'Number of inactive widget areas' => 'عدد مناطق الأدوات غير النشطة',
     'Number of widgets in all areas' => 'عدد الأدوات في جميع المناطق',
+    'Wide Total number of widget areas created Area' => 'إجمالي عدد مناطق الأدوات التي تم إنشاؤها',
 ];

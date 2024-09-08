@@ -11,8 +11,8 @@ class WidgetArea extends Model
 {
     protected $table = 'widget_areas';
 
-    protected $fillable = ['name', 'identifier','status','order'];
-
+    protected $fillable = ['name', 'identifier', 'description','status','order'];
+    
     public function scopeActive($query)
     {
         return $query->where('status',true);

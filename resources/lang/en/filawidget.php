@@ -69,4 +69,5 @@ return [
     'Inactive Widget Areas' => 'Inactive Widget Areas',
     'Number of inactive widget areas' => 'Number of inactive widget areas',
     'Number of widgets in all areas' => 'Number of widgets in all areas',
+    'Wide Total number of widget areas created Area' => 'Wide Total number of widget areas created Area',
 ];

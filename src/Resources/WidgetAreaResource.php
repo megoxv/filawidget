@@ -6,6 +6,9 @@ use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\Pages;
 use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\RelationManagers;
 use IbrahimBougaoua\Filawidget\Models\WidgetArea;
 use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -56,17 +59,24 @@ class WidgetAreaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(__('filawidget::filawidget.Area Name'))
-                    ->required(),
-    
-                Forms\Components\TextInput::make('identifier')
-                    ->label(__('filawidget::filawidget.Identifier'))
-                    ->unique(ignoreRecord: true)
-                    ->helperText(__('filawidget::filawidget.This identifier is used to reference the widget area in your code.'))
-                    ->required(),
-                Toggle::make('status')
-                    ->label(__('filawidget::filawidget.Status')),
+                Section::make()
+                ->schema([
+                    TextInput::make('name')
+                        ->label(__('filawidget::filawidget.Area Name'))
+                        ->required(),
+                    TextInput::make('identifier')
+                        ->label(__('filawidget::filawidget.Identifier'))
+                        ->unique(ignoreRecord: true)
+                        ->helperText(__('filawidget::filawidget.This identifier is used to reference the widget area in your code.'))
+                        ->required(),
+                    RichEditor::make('description')
+                        ->label(__('filawidget::filawidget.Description'))
+                        ->columnSpanFull(),
+                    Toggle::make('status')
+                        ->label(__('filawidget::filawidget.Status'))
+                        ->columnSpanFull(),
+                ])
+                ->columns(2)
             ]);
     }
 
