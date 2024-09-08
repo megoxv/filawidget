@@ -40,30 +40,31 @@
 Screenshots from the client project.
 
 <br />
+<a href="https://www.youtube.com/watch?v=KyedlYpU5i0" target="_blank">Youtube Video</a>
 
 <div align="center">
     <h1>Widgets</h1>
 </div>
 
-[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/widgets.png" width="100%">](https://www.youtube.com/@IbrahimBougaoua)
+[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/widgets.png" width="100%">](https://www.youtube.com/watch?v=KyedlYpU5i0)
 
 <div align="center">
     <h1>Pages</h1>
 </div>
 
-[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/pages.png" width="100%">](https://www.youtube.com/@IbrahimBougaoua)
+[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/pages.png" width="100%">](https://www.youtube.com/watch?v=KyedlYpU5i0)
 
 <div align="center">
     <h1>Preview</h1>
 </div>
 
-[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/preview.png" width="100%">](https://www.youtube.com/@IbrahimBougaoua)
+[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/preview.png" width="100%">](https://www.youtube.com/watch?v=KyedlYpU5i0)
 
 <div align="center">
     <h1>Frontend</h1>
 </div>
 
-[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/frontend.png" width="100%">](https://www.youtube.com/@IbrahimBougaoua)
+[<img src="https://raw.githubusercontent.com/ibrahimBougaoua/filawidget/main/screenshots/frontend.png" width="100%">](https://www.youtube.com/watch?v=KyedlYpU5i0)
 
 ## Installation
 
