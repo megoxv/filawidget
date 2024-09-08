@@ -14,6 +14,6 @@ class WidgetService
 
     public static function getWidgetBySlug(string $slug): ?Widget
     {
-        return Widget::active()->with(['type','area'])->where('slug',$slug)->first();
+        return Widget::active()->with(['type', 'area'])->where('slug', $slug)->first();
     }
 }

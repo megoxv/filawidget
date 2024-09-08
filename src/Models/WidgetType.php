@@ -11,7 +11,7 @@ class WidgetType extends Model
 {
     protected $table = 'widget_types';
 
-    protected $fillable = ['name', 'config','slug', 'fieldsIds'];
+    protected $fillable = ['name', 'config', 'slug', 'fieldsIds'];
 
     protected $casts = [
         'config' => 'array',
@@ -20,7 +20,7 @@ class WidgetType extends Model
 
     public function widgets()
     {
-        return $this->hasMany(Widget::class,'widget_type_id');
+        return $this->hasMany(Widget::class, 'widget_type_id');
     }
 
     public function fields()

@@ -8,14 +8,14 @@ use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use IbrahimBougaoua\Filawidget\Pages\Appearance;
 use IbrahimBougaoua\Filawidget\Resources\PageResource;
-use IbrahimBougaoua\Filawidget\Resources\WidgetResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\Widgets\WidgetAreaStatsOverview;
 use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource;
+use IbrahimBougaoua\Filawidget\Resources\WidgetResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetResource\Widgets\WidgetStatsOverview;
 use IbrahimBougaoua\Filawidget\Resources\WidgetTypeResource;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\View;
 
 class FilaWidgetPlugin implements Plugin
 {
@@ -50,25 +50,22 @@ class FilaWidgetPlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
-        if(config('filawidget.show_home_link'))
-        {
+        if (config('filawidget.show_home_link')) {
             FilamentView::registerRenderHook(
                 PanelsRenderHook::USER_MENU_BEFORE,
                 fn (): View => view('filawidget::components.home'),
             );
         }
 
-        if(Route::currentRouteName() === 'filament.admin.pages.appearance')
-        {
+        if (Route::currentRouteName() === 'filament.admin.pages.appearance') {
             FilamentView::registerRenderHook(
                 PanelsRenderHook::CONTENT_START,
                 fn (): View => view('filawidget::components.filter'),
             );
         }
 
-        if(config('filawidget.show_quick_appearance'))
-        {
-            FilamentView::registerRenderHook( 
+        if (config('filawidget.show_quick_appearance')) {
+            FilamentView::registerRenderHook(
                 PanelsRenderHook::TOPBAR_START,
                 fn (): View => view('filawidget::components.quick'),
             );

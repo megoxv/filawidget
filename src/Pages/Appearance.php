@@ -9,8 +9,8 @@ use IbrahimBougaoua\Filawidget\Models\WidgetArea;
 use IbrahimBougaoua\Filawidget\Services\AreaService;
 use IbrahimBougaoua\Filawidget\Services\PageService;
 use IbrahimBougaoua\Filawidget\Services\WidgetService;
-use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class Appearance extends Page
 {
@@ -19,14 +19,23 @@ class Appearance extends Page
     protected static string $view = 'filawidget::pages.appearance';
 
     public $filter = 'widgets';
+
     public $pagesOrder = [];
+
     public $subPagesOrder = [];
+
     public $widgetsOrder = [];
+
     public $widgetAreasOrder = [];
+
     public $pages = [];
+
     public $widgets = [];
+
     public $widgetAreas = [];
+
     public $nbrWidgetAreas = 0;
+
     public $nbrPages = 0;
 
     public static function shouldRegisterNavigation(): bool
@@ -72,7 +81,7 @@ class Appearance extends Page
 
     public function updateOrder()
     {
-        if (!is_array($this->widgetsOrder) || !is_array($this->widgetAreasOrder)) {
+        if (! is_array($this->widgetsOrder) || ! is_array($this->widgetAreasOrder)) {
             return response()->json(['status' => 'error', 'message' => __('filawidget::filawidget.Invalid input.')], 400);
         }
 
@@ -86,16 +95,18 @@ class Appearance extends Page
 
         $this->widgetAreas = WidgetArea::ordered()->withOrderedWidgets()->get();
 
-        if($this->widgetAreasOrder != [])
+        if ($this->widgetAreasOrder != []) {
             session()->flash('areaStatus', __('filawidget::filawidget.Area order successfully updated.'));
+        }
 
-        if($this->widgetsOrder != [])
+        if ($this->widgetsOrder != []) {
             session()->flash('widgetStatus', __('filawidget::filawidget.Widgets order successfully updated.'));
+        }
     }
 
     public function updatePageOrder()
     {
-        if (!is_array($this->pagesOrder) || !is_array($this->subPagesOrder)) {
+        if (! is_array($this->pagesOrder) || ! is_array($this->subPagesOrder)) {
             return response()->json(['status' => 'error', 'message' => __('filawidget::filawidget.Invalid input.')], 400);
         }
 
@@ -111,7 +122,7 @@ class Appearance extends Page
 
         session()->flash('pageStatus', __('filawidget::filawidget.Pages order successfully updated.'));
     }
-    
+
     public function hideAlert()
     {
         session()->flash('pageStatus', null);
@@ -130,13 +141,13 @@ class Appearance extends Page
 
     public function getHeader(): ?View
     {
-        return view('filawidget::components.header',[
+        return view('filawidget::components.header', [
             'filter' => $this->filter,
         ]);
     }
 
     public function getFooter(): ?View
     {
-        return $this->filter !== "preview" ? view('filawidget::components.footer') : null;
+        return $this->filter !== 'preview' ? view('filawidget::components.footer') : null;
     }
 }

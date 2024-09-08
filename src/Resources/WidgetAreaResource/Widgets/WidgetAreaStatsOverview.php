@@ -18,7 +18,7 @@ class WidgetAreaStatsOverview extends BaseWidget
         $inactiveWidgetAreas = WidgetArea::where('status', false)->count();
 
         $totalWidgets = Widget::count();
-        
+
         return [
             Stat::make(__('filawidget::filawidget.Total Widget Areas'), $totalWidgetAreas)
                 ->description(__('filawidget::filawidget.Wide Total number of widget areas created Area'))

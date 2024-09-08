@@ -21,13 +21,13 @@ class FilawidgetServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigration('create_filawidget_table')
             ->hasCommand(FilawidgetCommand::class);
-            
-            if (file_exists($package->basePath('/../resources/views'))) {
-                $package->hasViews();
-            }
-            
-            if (file_exists($package->basePath('/../resources/lang'))) {
-                $package->hasTranslations();
-            }
+
+        if (file_exists($package->basePath('/../resources/views'))) {
+            $package->hasViews();
+        }
+
+        if (file_exists($package->basePath('/../resources/lang'))) {
+            $package->hasTranslations();
+        }
     }
 }

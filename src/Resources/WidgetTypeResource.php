@@ -2,13 +2,7 @@
 
 namespace IbrahimBougaoua\Filawidget\Resources;
 
-use IbrahimBougaoua\Filawidget\Resources\WidgetTypeResource\Pages;
-use IbrahimBougaoua\Filawidget\Resources\WidgetTypeResource\RelationManagers;
-use IbrahimBougaoua\Filawidget\Models\Widget;
-use IbrahimBougaoua\Filawidget\Models\Field as WidgetsField;
 use Filament\Forms;
-use Filament\Forms\Components\Field;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -18,11 +12,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use IbrahimBougaoua\Filawidget\Models\WidgetArea;
-use IbrahimBougaoua\Filawidget\Models\WidgetField;
+use IbrahimBougaoua\Filawidget\Models\Field as WidgetsField;
 use IbrahimBougaoua\Filawidget\Models\WidgetType;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use IbrahimBougaoua\Filawidget\Resources\WidgetTypeResource\Pages;
 
 class WidgetTypeResource extends Resource
 {
@@ -34,7 +26,7 @@ class WidgetTypeResource extends Resource
     {
         return config('filawidget.should_register_navigation_widget_types');
     }
-    
+
     public static function getLabel(): ?string
     {
         return __('filawidget::filawidget.Widget Type');
@@ -59,76 +51,76 @@ class WidgetTypeResource extends Resource
     {
         return __('filawidget::filawidget.Appearance Management');
     }
-    
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Section::make()
-                ->schema([
-                    TextInput::make('name')
-                        ->label(__('filawidget::filawidget.Name'))
-                        ->required(),
-                    Select::make('fieldsIds')
-                        ->label(__('filawidget::filawidget.Fields'))
-                        ->options(
-                            WidgetsField::pluck('name','id')->toArray()
-                        )
-                        ->multiple()
-                        ->reactive()
-                        ->required(),
-                    Repeater::make('fields')
-                        ->schema(function (callable $get) {
-                            
-                            $fields = WidgetsField::whereIn('id',$get('fieldsIds'))->get(['name','type','options','id'])->toArray();
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('filawidget::filawidget.Name'))
+                            ->required(),
+                        Select::make('fieldsIds')
+                            ->label(__('filawidget::filawidget.Fields'))
+                            ->options(
+                                WidgetsField::pluck('name', 'id')->toArray()
+                            )
+                            ->multiple()
+                            ->reactive()
+                            ->required(),
+                        Repeater::make('fields')
+                            ->schema(function (callable $get) {
 
-                            return collect($fields)->map(function ($field) {
-                                $component = match ($field['type']) {
-                                    'text' => Forms\Components\TextInput::make("config.{$field['name']}"),
-                                    'textarea' => Forms\Components\Textarea::make("config.{$field['name']}"),
-                                    'number' => Forms\Components\TextInput::make("config.{$field['name']}")->numeric(),
-                                    'select' => Forms\Components\Select::make("config.{$field['name']}")
-                                                ->options($field['options'] ?? []),
-                                    'checkbox' => Forms\Components\Checkbox::make("config.{$field['name']}"),
-                                    'radio' => Forms\Components\Radio::make("config.{$field['name']}")
-                                                ->options($field['options'] ?? []),
-                                    'toggle' => Forms\Components\Toggle::make("config.{$field['name']}"),
-                                    'color' => Forms\Components\ColorPicker::make("config.{$field['name']}"),
-                                    'date' => Forms\Components\DatePicker::make("config.{$field['name']}"),
-                                    'datetime' => Forms\Components\DateTimePicker::make("config.{$field['name']}"),
-                                    'time' => Forms\Components\TimePicker::make("config.{$field['name']}"),
-                                    'file' => Forms\Components\FileUpload::make("config.{$field['name']}"),
-                                    'image' => Forms\Components\FileUpload::make("config.{$field['name']}")->image(),
-                                    'richeditor' => Forms\Components\RichEditor::make("config.{$field['name']}"),
-                                    'markdown' => Forms\Components\MarkdownEditor::make("config.{$field['name']}"),
-                                    'tags' => Forms\Components\TagsInput::make("config.{$field['name']}"),
-                                    'password' => Forms\Components\TextInput::make("config.{$field['name']}")->password(),
-                                    default => Forms\Components\TextInput::make("config.{$field['name']}"),
-                                };
+                                $fields = WidgetsField::whereIn('id', $get('fieldsIds'))->get(['name', 'type', 'options', 'id'])->toArray();
 
-                                if (isset($field['default'])) {
-                                    $component->default($field['default']);
-                                }
+                                return collect($fields)->map(function ($field) {
+                                    $component = match ($field['type']) {
+                                        'text' => Forms\Components\TextInput::make("config.{$field['name']}"),
+                                        'textarea' => Forms\Components\Textarea::make("config.{$field['name']}"),
+                                        'number' => Forms\Components\TextInput::make("config.{$field['name']}")->numeric(),
+                                        'select' => Forms\Components\Select::make("config.{$field['name']}")
+                                            ->options($field['options'] ?? []),
+                                        'checkbox' => Forms\Components\Checkbox::make("config.{$field['name']}"),
+                                        'radio' => Forms\Components\Radio::make("config.{$field['name']}")
+                                            ->options($field['options'] ?? []),
+                                        'toggle' => Forms\Components\Toggle::make("config.{$field['name']}"),
+                                        'color' => Forms\Components\ColorPicker::make("config.{$field['name']}"),
+                                        'date' => Forms\Components\DatePicker::make("config.{$field['name']}"),
+                                        'datetime' => Forms\Components\DateTimePicker::make("config.{$field['name']}"),
+                                        'time' => Forms\Components\TimePicker::make("config.{$field['name']}"),
+                                        'file' => Forms\Components\FileUpload::make("config.{$field['name']}"),
+                                        'image' => Forms\Components\FileUpload::make("config.{$field['name']}")->image(),
+                                        'richeditor' => Forms\Components\RichEditor::make("config.{$field['name']}"),
+                                        'markdown' => Forms\Components\MarkdownEditor::make("config.{$field['name']}"),
+                                        'tags' => Forms\Components\TagsInput::make("config.{$field['name']}"),
+                                        'password' => Forms\Components\TextInput::make("config.{$field['name']}")->password(),
+                                        default => Forms\Components\TextInput::make("config.{$field['name']}"),
+                                    };
 
-                                if (isset($field['validation'])) {
-                                    $component->rules($field['validation']);
-                                }
+                                    if (isset($field['default'])) {
+                                        $component->default($field['default']);
+                                    }
 
-                                return $component->label(ucfirst(str_replace('_', ' ', $field['name'])));
-                            })->toArray();
-                    })
-                    ->label(__('filawidget::filawidget.Configurations'))
-                    ->maxItems(1)
-                    ->minItems(1)
-                    ->reorderable(false)
-                    ->deletable(false)
-                    ->required()
-                    ->reactive()
-                    ->defaultItems(1)
-                    ->addActionLabel(__('filawidget::filawidget.Display Fields'))
-                    ->columnSpanFull(),
-                ])
-                ->columns(2)
+                                    if (isset($field['validation'])) {
+                                        $component->rules($field['validation']);
+                                    }
+
+                                    return $component->label(ucfirst(str_replace('_', ' ', $field['name'])));
+                                })->toArray();
+                            })
+                            ->label(__('filawidget::filawidget.Configurations'))
+                            ->maxItems(1)
+                            ->minItems(1)
+                            ->reorderable(false)
+                            ->deletable(false)
+                            ->required()
+                            ->reactive()
+                            ->defaultItems(1)
+                            ->addActionLabel(__('filawidget::filawidget.Display Fields'))
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
             ]);
     }
 

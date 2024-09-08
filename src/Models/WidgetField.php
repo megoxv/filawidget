@@ -9,7 +9,7 @@ class WidgetField extends Model
     public $incrementing = false;
 
     protected $primaryKey = ['widget_id', 'widget_field_id'];
-    
+
     public $timestamps = false;
 
     protected $fillable = [

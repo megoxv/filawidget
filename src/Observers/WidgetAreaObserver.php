@@ -9,6 +9,6 @@ class WidgetAreaObserver
 {
     public function creating(WidgetArea $widgetArea)
     {
-        $widgetArea->identifier = Str::slug($widgetArea->name,'-');
+        $widgetArea->identifier = Str::slug($widgetArea->name, '-');
     }
 }

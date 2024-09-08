@@ -14,6 +14,7 @@ abstract class BaseWidget
     public function render()
     {
         $view = $this->getView();
+
         return view($view, $this->config);
     }
 

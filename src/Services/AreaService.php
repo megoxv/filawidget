@@ -19,6 +19,6 @@ class AreaService
 
     public static function getWidgetByIdentifier(string $identifier): ?WidgetArea
     {
-        return WidgetArea::active()->where('identifier',$identifier)->first();
+        return WidgetArea::active()->where('identifier', $identifier)->first();
     }
 }

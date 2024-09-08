@@ -9,6 +9,6 @@ class PageObserver
 {
     public function creating(Page $page)
     {
-        $page->slug = Str::slug($page->title,'-');
+        $page->slug = Str::slug($page->title, '-');
     }
 }

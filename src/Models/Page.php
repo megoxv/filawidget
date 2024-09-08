@@ -12,11 +12,11 @@ class Page extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug', 'content','status','order','child_order', 'parent_id'];
+    protected $fillable = ['title', 'slug', 'content', 'status', 'order', 'child_order', 'parent_id'];
 
     public function scopeActive($query)
     {
-        return $query->where('status',true);
+        return $query->where('status', true);
     }
 
     public function scopeFather($query)
@@ -28,12 +28,12 @@ class Page extends Model
     {
         return $query->whereNotNull('parent_id');
     }
-    
+
     public function scopeOrdered($query)
     {
         return $query->orderBy('order');
     }
-    
+
     public function scopeChildOrdered($query)
     {
         return $query->orderBy('child_order');

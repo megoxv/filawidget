@@ -2,9 +2,6 @@
 
 namespace IbrahimBougaoua\Filawidget\Resources;
 
-use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource\Pages;
-use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource\RelationManagers;
-use IbrahimBougaoua\Filawidget\Models\Field;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
@@ -12,8 +9,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use IbrahimBougaoua\Filawidget\Models\Field;
+use IbrahimBougaoua\Filawidget\Resources\WidgetFieldResource\Pages;
 
 class WidgetFieldResource extends Resource
 {
@@ -56,40 +53,40 @@ class WidgetFieldResource extends Resource
         return $form
             ->schema([
                 Section::make()
-                ->schema([
-                    Forms\Components\TextInput::make('name')
-                        ->label(__('filawidget::filawidget.Field Name'))
-                        ->required(),
-        
-                    Forms\Components\Select::make('type')
-                        ->label(__('filawidget::filawidget.Field Type'))
-                        ->options([
-                            'text' => 'Text',
-                            'textarea' => 'Textarea',
-                            'number' => 'Number',
-                            'select' => 'Select',
-                            'checkbox' => 'Checkbox',
-                            'radio' => 'Radio',
-                            'toggle' => 'Toggle',
-                            'color' => 'Color Picker',
-                            'date' => 'Date Picker',
-                            'datetime' => 'Date Time Picker',
-                            'time' => 'Time Picker',
-                            'file' => 'File Upload',
-                            'image' => 'Image Upload',
-                            'richeditor' => 'Rich Editor',
-                            'markdown' => 'Markdown Editor',
-                            'tags' => 'Tags Input',
-                            'password' => 'Password',
-                        ])
-                        ->required(),
-        
-                    Forms\Components\Textarea::make('options')
-                        ->label(__('filawidget::filawidget.Options'))
-                        ->helperText(__('filawidget::filawidget.Provide additional options in JSON format (e.g., {"default": "value", "validation": "required|max:255"})'))
-                        ->columnSpanFull(),
-                ])
-                ->columns(2),
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label(__('filawidget::filawidget.Field Name'))
+                            ->required(),
+
+                        Forms\Components\Select::make('type')
+                            ->label(__('filawidget::filawidget.Field Type'))
+                            ->options([
+                                'text' => 'Text',
+                                'textarea' => 'Textarea',
+                                'number' => 'Number',
+                                'select' => 'Select',
+                                'checkbox' => 'Checkbox',
+                                'radio' => 'Radio',
+                                'toggle' => 'Toggle',
+                                'color' => 'Color Picker',
+                                'date' => 'Date Picker',
+                                'datetime' => 'Date Time Picker',
+                                'time' => 'Time Picker',
+                                'file' => 'File Upload',
+                                'image' => 'Image Upload',
+                                'richeditor' => 'Rich Editor',
+                                'markdown' => 'Markdown Editor',
+                                'tags' => 'Tags Input',
+                                'password' => 'Password',
+                            ])
+                            ->required(),
+
+                        Forms\Components\Textarea::make('options')
+                            ->label(__('filawidget::filawidget.Options'))
+                            ->helperText(__('filawidget::filawidget.Provide additional options in JSON format (e.g., {"default": "value", "validation": "required|max:255"})'))
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
             ]);
     }
 

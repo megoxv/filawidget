@@ -11,7 +11,6 @@ class WidgetController extends Controller
     /**
      * Update the order of the widgets.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateOrder(Request $request)
@@ -19,7 +18,7 @@ class WidgetController extends Controller
         $order = $request->input('order');
 
         // Validate the input to ensure it's an array
-        if (!is_array($order)) {
+        if (! is_array($order)) {
             return response()->json(['status' => 'error', 'message' => 'Invalid input.'], 400);
         }
 

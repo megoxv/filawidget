@@ -2,23 +2,20 @@
 
 namespace IbrahimBougaoua\Filawidget\Resources;
 
-use IbrahimBougaoua\Filawidget\Resources\PageResource\Pages;
-use IbrahimBougaoua\Filawidget\Resources\PageResource\RelationManagers;
-use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Table;
 use IbrahimBougaoua\Filawidget\Models\Page;
+use IbrahimBougaoua\Filawidget\Resources\PageResource\Pages;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PageResource extends Resource
 {
@@ -30,7 +27,7 @@ class PageResource extends Resource
     {
         return config('filawidget.should_register_navigation_pages');
     }
-    
+
     public static function getLabel(): ?string
     {
         return __('filawidget::filawidget.Page');
@@ -50,7 +47,7 @@ class PageResource extends Resource
     {
         return __('filawidget::filawidget.Page');
     }
-    
+
     public static function getNavigationGroup(): ?string
     {
         return __('filawidget::filawidget.Appearance Management');
@@ -69,8 +66,8 @@ class PageResource extends Resource
                         Select::make('parent_id')
                             ->label(__('filawidget::filawidget.Root'))
                             ->options(
-                                Page::pluck('title','id')
-                                ->toArray()
+                                Page::pluck('title', 'id')
+                                    ->toArray()
                             )
                             ->default(
                                 request()->has('page_id') ? request()->query('page_id') : null
@@ -82,8 +79,8 @@ class PageResource extends Resource
                         Toggle::make('status')
                             ->label(__('filawidget::filawidget.Status'))
                             ->inline(false),
-                ])
-                ->columns(2)
+                    ])
+                    ->columns(2),
             ]);
     }
 

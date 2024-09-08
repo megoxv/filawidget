@@ -2,9 +2,9 @@
 
 namespace IbrahimBougaoua\Filawidget\Resources\WidgetTypeResource\Pages;
 
-use IbrahimBougaoua\Filawidget\Resources\WidgetTypeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use IbrahimBougaoua\Filawidget\Resources\WidgetTypeResource;
 
 class EditWidgetType extends EditRecord
 {

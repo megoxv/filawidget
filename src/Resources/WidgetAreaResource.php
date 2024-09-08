@@ -2,10 +2,6 @@
 
 namespace IbrahimBougaoua\Filawidget\Resources;
 
-use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\Pages;
-use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\RelationManagers;
-use IbrahimBougaoua\Filawidget\Models\WidgetArea;
-use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -16,15 +12,16 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use IbrahimBougaoua\Filawidget\Models\WidgetArea;
+use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\Pages;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WidgetAreaResource extends Resource
 {
     protected static ?string $model = WidgetArea::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
-    
+
     public static function shouldRegisterNavigation(): bool
     {
         return config('filawidget.should_register_navigation_widget_areas');
@@ -49,7 +46,7 @@ class WidgetAreaResource extends Resource
     {
         return __('filawidget::filawidget.Widget Area');
     }
-    
+
     public static function getNavigationGroup(): ?string
     {
         return __('filawidget::filawidget.Appearance Management');
@@ -60,23 +57,23 @@ class WidgetAreaResource extends Resource
         return $form
             ->schema([
                 Section::make()
-                ->schema([
-                    TextInput::make('name')
-                        ->label(__('filawidget::filawidget.Area Name'))
-                        ->required(),
-                    TextInput::make('identifier')
-                        ->label(__('filawidget::filawidget.Identifier'))
-                        ->unique(ignoreRecord: true)
-                        ->helperText(__('filawidget::filawidget.This identifier is used to reference the widget area in your code.'))
-                        ->required(),
-                    RichEditor::make('description')
-                        ->label(__('filawidget::filawidget.Description'))
-                        ->columnSpanFull(),
-                    Toggle::make('status')
-                        ->label(__('filawidget::filawidget.Status'))
-                        ->columnSpanFull(),
-                ])
-                ->columns(2)
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('filawidget::filawidget.Area Name'))
+                            ->required(),
+                        TextInput::make('identifier')
+                            ->label(__('filawidget::filawidget.Identifier'))
+                            ->unique(ignoreRecord: true)
+                            ->helperText(__('filawidget::filawidget.This identifier is used to reference the widget area in your code.'))
+                            ->required(),
+                        RichEditor::make('description')
+                            ->label(__('filawidget::filawidget.Description'))
+                            ->columnSpanFull(),
+                        Toggle::make('status')
+                            ->label(__('filawidget::filawidget.Status'))
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
             ]);
     }
 

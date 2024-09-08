@@ -16,7 +16,7 @@ class PageService
 
     public static function getPageBySlug(string $slug): ?Page
     {
-        return Page::active()->with('children')->where('slug',$slug)->first();
+        return Page::active()->with('children')->where('slug', $slug)->first();
     }
 
     public static function counts()

@@ -2,10 +2,10 @@
 
 namespace IbrahimBougaoua\Filawidget\Resources\WidgetResource\Pages;
 
-use IbrahimBougaoua\Filawidget\Resources\WidgetResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use IbrahimBougaoua\Filawidget\Models\WidgetField;
+use IbrahimBougaoua\Filawidget\Resources\WidgetResource;
 
 class EditWidget extends EditRecord
 {
@@ -54,5 +54,4 @@ class EditWidget extends EditRecord
             }
         }
     }
-
 }

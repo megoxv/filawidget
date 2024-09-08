@@ -2,16 +2,10 @@
 
 namespace IbrahimBougaoua\Filawidget\Resources;
 
-use IbrahimBougaoua\Filawidget\Resources\WidgetResource\Pages;
-use IbrahimBougaoua\Filawidget\Resources\WidgetResource\RelationManagers;
-use IbrahimBougaoua\Filawidget\Models\Widget;
-use IbrahimBougaoua\Filawidget\Models\Field as WidgetsField;
-use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Field;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\MarkdownEditor;
@@ -34,11 +28,13 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use IbrahimBougaoua\Filawidget\Models\Field as WidgetsField;
+use IbrahimBougaoua\Filawidget\Models\Widget;
 use IbrahimBougaoua\Filawidget\Models\WidgetArea;
 use IbrahimBougaoua\Filawidget\Models\WidgetField;
 use IbrahimBougaoua\Filawidget\Models\WidgetType;
+use IbrahimBougaoua\Filawidget\Resources\WidgetResource\Pages;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WidgetResource extends Resource
 {
@@ -50,7 +46,7 @@ class WidgetResource extends Resource
     {
         return config('filawidget.should_register_navigation_widgets');
     }
-    
+
     public static function getLabel(): ?string
     {
         return __('filawidget::filawidget.Widget');
@@ -75,121 +71,120 @@ class WidgetResource extends Resource
     {
         return __('filawidget::filawidget.Appearance Management');
     }
-    
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Section::make()
-                ->schema([
-                    TextInput::make('name')
-                        ->label(__('filawidget::filawidget.Name'))
-                        ->required()
-                        ->columnSpanFull(),
-                    Select::make('widget_area_id')
-                        ->label(__('filawidget::filawidget.Area'))
-                        ->options(
-                            WidgetArea::pluck('name','id')->toArray()
-                        )
-                        ->required()
-                        ->searchable()
-                        ->default(
-                            request()->has('area_id') ? request()->query('area_id') : null
-                        ),
-                    Select::make('widget_type_id')
-                        ->label(__('filawidget::filawidget.Widget Type'))
-                        ->searchable()
-                        ->options(
-                            WidgetType::pluck('name','id')->toArray()
-                        )
-                        ->afterStateUpdated(function (callable $set, $state) { 
-                            $widgetType = WidgetType::find($state);
-                            if($widgetType)
-                            {
-                                $set('fieldsIds', $widgetType->fieldsIds);
-                            }
-                        })
-                        ->reactive()
-                        ->required(),
-                    RichEditor::make('description')
-                        ->label(__('filawidget::filawidget.Description'))
-                        ->columnSpanFull(),
-                    Toggle::make('status')
-                        ->label(__('filawidget::filawidget.Status')),
-                    Hidden::make('fieldsIds')
-                    ->reactive(),
-                    Repeater::make('values')
-                    ->label(__('filawidget::filawidget.Appearance'))
-                    ->schema(function (callable $get) {
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('filawidget::filawidget.Name'))
+                            ->required()
+                            ->columnSpanFull(),
+                        Select::make('widget_area_id')
+                            ->label(__('filawidget::filawidget.Area'))
+                            ->options(
+                                WidgetArea::pluck('name', 'id')->toArray()
+                            )
+                            ->required()
+                            ->searchable()
+                            ->default(
+                                request()->has('area_id') ? request()->query('area_id') : null
+                            ),
+                        Select::make('widget_type_id')
+                            ->label(__('filawidget::filawidget.Widget Type'))
+                            ->searchable()
+                            ->options(
+                                WidgetType::pluck('name', 'id')->toArray()
+                            )
+                            ->afterStateUpdated(function (callable $set, $state) {
+                                $widgetType = WidgetType::find($state);
+                                if ($widgetType) {
+                                    $set('fieldsIds', $widgetType->fieldsIds);
+                                }
+                            })
+                            ->reactive()
+                            ->required(),
+                        RichEditor::make('description')
+                            ->label(__('filawidget::filawidget.Description'))
+                            ->columnSpanFull(),
+                        Toggle::make('status')
+                            ->label(__('filawidget::filawidget.Status')),
+                        Hidden::make('fieldsIds')
+                            ->reactive(),
+                        Repeater::make('values')
+                            ->label(__('filawidget::filawidget.Appearance'))
+                            ->schema(function (callable $get) {
 
-                        $fieldsIds = $get('fieldsIds') ?? [];
-                        
-                        $widgetId = $get('id') ?? null;
+                                $fieldsIds = $get('fieldsIds') ?? [];
 
-                        $fields = [];
-                        if (is_array($fieldsIds) && count($fieldsIds) > 0) {
-                            $fields = WidgetsField::whereIn('id', $fieldsIds)
-                                ->get(['fields.name', 'fields.type', 'fields.options', 'fields.id'])
-                                ->toArray();
-                        }
+                                $widgetId = $get('id') ?? null;
 
-                        $values = [];
-                        if (!is_null($widgetId) && is_array($fieldsIds) && count($fieldsIds) > 0) {
-                            $values = WidgetField::where('widget_id', $widgetId)
-                                ->whereIn('widget_field_id', $fieldsIds)
-                                ->get(['widget_field_id', 'value'])
-                                ->pluck('value', 'widget_field_id')
-                                ->toArray();
-                        }
+                                $fields = [];
+                                if (is_array($fieldsIds) && count($fieldsIds) > 0) {
+                                    $fields = WidgetsField::whereIn('id', $fieldsIds)
+                                        ->get(['fields.name', 'fields.type', 'fields.options', 'fields.id'])
+                                        ->toArray();
+                                }
 
-                        return collect($fields)->map(function ($field) use ($values) {
+                                $values = [];
+                                if (! is_null($widgetId) && is_array($fieldsIds) && count($fieldsIds) > 0) {
+                                    $values = WidgetField::where('widget_id', $widgetId)
+                                        ->whereIn('widget_field_id', $fieldsIds)
+                                        ->get(['widget_field_id', 'value'])
+                                        ->pluck('value', 'widget_field_id')
+                                        ->toArray();
+                                }
 
-                            $options = json_decode($field['options'], true);
+                                return collect($fields)->map(function ($field) use ($values) {
 
-                            $defaultValue = $options['default'] ?? '';
+                                    $options = json_decode($field['options'], true);
 
-                            $component = match ($field['type']) {
-                                'text' => TextInput::make($field['name']),
-                                'textarea' => Textarea::make($field['name']),
-                                'number' => TextInput::make($field['name'])->numeric(),
-                                'select' => Select::make($field['name'])
-                                    ->options($field['options'] ?? []),
-                                'checkbox' => Checkbox::make($field['name']),
-                                'radio' => Radio::make($field['name'])
-                                    ->options($field['options'] ?? []),
-                                'toggle' => Toggle::make($field['name']),
-                                'color' => ColorPicker::make($field['name']),
-                                'date' => DatePicker::make($field['name']),
-                                'datetime' => DateTimePicker::make($field['name']),
-                                'time' => TimePicker::make($field['name']),
-                                'file' => FileUpload::make($field['name']),
-                                'image' => FileUpload::make($field['name'])->image(),
-                                'richeditor' => RichEditor::make($field['name']),
-                                'markdown' => MarkdownEditor::make($field['name']),
-                                'tags' => TagsInput::make($field['name']),
-                                'password' => TextInput::make($field['name'])->password(),
-                                default => TextInput::make($field['name']),
-                            };
+                                    $defaultValue = $options['default'] ?? '';
 
-                            $component->default($values[$field['id']] ?? $defaultValue);
-                            
-                            if (isset($field['validation'])) {
-                                $component->rules($field['validation']);
-                            }
+                                    $component = match ($field['type']) {
+                                        'text' => TextInput::make($field['name']),
+                                        'textarea' => Textarea::make($field['name']),
+                                        'number' => TextInput::make($field['name'])->numeric(),
+                                        'select' => Select::make($field['name'])
+                                            ->options($field['options'] ?? []),
+                                        'checkbox' => Checkbox::make($field['name']),
+                                        'radio' => Radio::make($field['name'])
+                                            ->options($field['options'] ?? []),
+                                        'toggle' => Toggle::make($field['name']),
+                                        'color' => ColorPicker::make($field['name']),
+                                        'date' => DatePicker::make($field['name']),
+                                        'datetime' => DateTimePicker::make($field['name']),
+                                        'time' => TimePicker::make($field['name']),
+                                        'file' => FileUpload::make($field['name']),
+                                        'image' => FileUpload::make($field['name'])->image(),
+                                        'richeditor' => RichEditor::make($field['name']),
+                                        'markdown' => MarkdownEditor::make($field['name']),
+                                        'tags' => TagsInput::make($field['name']),
+                                        'password' => TextInput::make($field['name'])->password(),
+                                        default => TextInput::make($field['name']),
+                                    };
 
-                            return $component->label(ucfirst(str_replace('_', ' ', $field['name'])));
-                        })->toArray();
+                                    $component->default($values[$field['id']] ?? $defaultValue);
 
-                    })
-                    ->label(__('filawidget::filawidget.Configurations'))
-                    ->reorderable(false)
-                    ->deletable(false)
-                    ->reactive()
-                    ->defaultItems(1)
-                    ->addActionLabel(__('filawidget::filawidget.Display Fields'))
-                    ->columnSpanFull(),
-                ])
-                ->columns(2)
+                                    if (isset($field['validation'])) {
+                                        $component->rules($field['validation']);
+                                    }
+
+                                    return $component->label(ucfirst(str_replace('_', ' ', $field['name'])));
+                                })->toArray();
+
+                            })
+                            ->label(__('filawidget::filawidget.Configurations'))
+                            ->reorderable(false)
+                            ->deletable(false)
+                            ->reactive()
+                            ->defaultItems(1)
+                            ->addActionLabel(__('filawidget::filawidget.Display Fields'))
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -198,15 +193,15 @@ class WidgetResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->badge()
-                ->color('success')
-                ->label(__('filawidget::filawidget.Widget')),
+                    ->badge()
+                    ->color('success')
+                    ->label(__('filawidget::filawidget.Widget')),
                 TextColumn::make('type.name')
-                ->badge()
-                ->color('primary')
-                ->label(__('filawidget::filawidget.Widget Type')),
+                    ->badge()
+                    ->color('primary')
+                    ->label(__('filawidget::filawidget.Widget Type')),
                 SelectColumn::make('widget_area_id')
-                    ->options(WidgetArea::pluck('name','id')->toArray())
+                    ->options(WidgetArea::pluck('name', 'id')->toArray())
                     ->label(__('filawidget::filawidget.Widget Area')),
                 ToggleColumn::make('status')
                     ->label(__('filawidget::filawidget.Status')),
@@ -219,7 +214,7 @@ class WidgetResource extends Resource
             ->filters([
                 SelectFilter::make('widget_area_id')
                     ->label(__('filawidget::filawidget.Widget Area'))
-                    ->options(WidgetArea::pluck('name','id')->toArray()),
+                    ->options(WidgetArea::pluck('name', 'id')->toArray()),
                 Filter::make('created_at')
                     ->label(__('filawidget::filawidget.Created at'))
                     ->form([
@@ -236,7 +231,7 @@ class WidgetResource extends Resource
                                 $data['created_until'],
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
-                    })
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

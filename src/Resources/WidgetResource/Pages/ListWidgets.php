@@ -2,9 +2,9 @@
 
 namespace IbrahimBougaoua\Filawidget\Resources\WidgetResource\Pages;
 
-use IbrahimBougaoua\Filawidget\Resources\WidgetResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use IbrahimBougaoua\Filawidget\Resources\WidgetResource;
 use IbrahimBougaoua\Filawidget\Resources\WidgetResource\Widgets\WidgetStatsOverview;
 
 class ListWidgets extends ListRecords

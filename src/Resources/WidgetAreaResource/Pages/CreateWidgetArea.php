@@ -2,9 +2,8 @@
 
 namespace IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource\Pages;
 
-use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use IbrahimBougaoua\Filawidget\Resources\WidgetAreaResource;
 
 class CreateWidgetArea extends CreateRecord
 {
