@@ -36,6 +36,9 @@
 - **Customizable Widget and Page Orders**: Users can update the order of widgets, pages, and widget areas. Each item can be repositioned dynamically, offering complete control over the structure.
 - **Automated Order Updates**: Use the built-in functionality to update the order of widgets and pages across the system automatically.
 
+### Note :
+Screenshots from the client project.
+
 <br />
 
 <div align="center">
@@ -102,6 +105,32 @@ Optionally, you can publish the views using
 
 ```bash
 php artisan vendor:publish --tag="filawidget-views"
+```
+
+Available fields of filament that can use it for create dynamic widget.
+
+```bash
+----------------------------------------
+| Field Type        | Description      |
+|-------------------|------------------|
+| Text              | Text Field       |
+| Textarea          | Textarea Field   |
+| Number            | Number Input     |
+| Select            | Select Dropdown  |
+| Checkbox          | Checkbox         |
+| Radio             | Radio Button     |
+| Toggle            | Toggle Switch    |
+| Color Picker      | Color Picker     |
+| Date Picker       | Date Picker      |
+| Date Time Picker  | Date Time Picker |
+| Time Picker       | Time Picker      |
+| File Upload       | File Upload      |
+| Image Upload      | Image Upload     |
+| Rich Editor       | Rich Text Editor |
+| Markdown Editor   | Markdown Editor  |
+| Tags Input        | Tags Input       |
+| Password          | Password Input   |
+----------------------------------------
 ```
 
 ## Usage
