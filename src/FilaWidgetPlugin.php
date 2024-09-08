@@ -50,10 +50,13 @@ class FilaWidgetPlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::USER_MENU_BEFORE,
-            fn (): View => view('filawidget::components.home'),
-        );
+        if(config('filawidget.show_home_link'))
+        {
+            FilamentView::registerRenderHook(
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn (): View => view('filawidget::components.home'),
+            );
+        }
 
         if(Route::currentRouteName() === 'filament.admin.pages.appearance')
         {
@@ -63,9 +66,12 @@ class FilaWidgetPlugin implements Plugin
             );
         }
 
-        FilamentView::registerRenderHook( 
-            PanelsRenderHook::TOPBAR_START,
-            fn (): View => view('filawidget::components.quick'),
-        );
+        if(config('filawidget.show_quick_appearance'))
+        {
+            FilamentView::registerRenderHook( 
+                PanelsRenderHook::TOPBAR_START,
+                fn (): View => view('filawidget::components.quick'),
+            );
+        }
     }
 }

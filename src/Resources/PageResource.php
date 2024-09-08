@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -25,9 +26,34 @@ class PageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-square-3-stack-3d';
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return config('filawidget.should_register_navigation_pages');
+    }
+    
+    public static function getLabel(): ?string
+    {
+        return __('filawidget::filawidget.Page');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('filawidget::filawidget.Pages');
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return __('filawidget::filawidget.Page');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filawidget::filawidget.Page');
+    }
+    
     public static function getNavigationGroup(): ?string
     {
-        return 'Appearance';
+        return __('filawidget::filawidget.Appearance Management');
     }
 
     public static function form(Form $form): Form
@@ -36,11 +62,12 @@ class PageResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
-                        Forms\Components\TextInput::make('title')
+                        TextInput::make('title')
+                            ->label(__('filawidget::filawidget.Title'))
                             ->required()
                             ->maxLength(255),
                         Select::make('parent_id')
-                            ->label('Pages')
+                            ->label(__('filawidget::filawidget.Root'))
                             ->options(
                                 Page::pluck('title','id')
                                 ->toArray()
@@ -50,10 +77,11 @@ class PageResource extends Resource
                             )
                             ->searchable(),
                         RichEditor::make('content')
+                            ->label(__('filawidget::filawidget.Content'))
                             ->columnSpanFull(),
                         Toggle::make('status')
-                            ->inline(false)
-                            ->label('Status'),
+                            ->label(__('filawidget::filawidget.Status'))
+                            ->inline(false),
                 ])
                 ->columns(2)
             ]);
@@ -64,21 +92,23 @@ class PageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->label(__('filawidget::filawidget.Title'))
                     ->badge()
                     ->color('success')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent.title')
+                    ->label(__('filawidget::filawidget.Root'))
                     ->badge()
                     ->color('warning')
                     ->sortable()
                     ->default('-'),
                 ToggleColumn::make('status')
-                    ->label('Status'),
+                    ->label(__('filawidget::filawidget.Status')),
                 TextColumn::make('created_at')
                     ->dateTime('d, M Y h:s A')
                     ->badge()
                     ->color('success')
-                    ->label('Created at'),
+                    ->label(__('filawidget::filawidget.Created at')),
             ])
             ->filters([
                 //

@@ -24,13 +24,32 @@ class WidgetAreaResource extends Resource
     
     public static function shouldRegisterNavigation(): bool
     {
-        // Hide this resource from the navigation
-        return auth()->user()->isAdmin();
+        return config('filawidget.should_register_navigation_widget_areas');
     }
 
+    public static function getLabel(): ?string
+    {
+        return __('filawidget::filawidget.Widget Area');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('filawidget::filawidget.Widget Areas');
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return __('filawidget::filawidget.Widget Area');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filawidget::filawidget.Widget Area');
+    }
+    
     public static function getNavigationGroup(): ?string
     {
-        return 'Appearance';
+        return __('filawidget::filawidget.Appearance Management');
     }
 
     public static function form(Form $form): Form
@@ -38,16 +57,16 @@ class WidgetAreaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Area Name')
+                    ->label(__('filawidget::filawidget.Area Name'))
                     ->required(),
     
                 Forms\Components\TextInput::make('identifier')
-                    ->label('Identifier')
+                    ->label(__('filawidget::filawidget.Identifier'))
                     ->unique(ignoreRecord: true)
-                    ->helperText('This identifier is used to reference the widget area in your code.')
+                    ->helperText(__('filawidget::filawidget.This identifier is used to reference the widget area in your code.'))
                     ->required(),
                 Toggle::make('status')
-                    ->label('Status'),
+                    ->label(__('filawidget::filawidget.Status')),
             ]);
     }
 
@@ -56,20 +75,20 @@ class WidgetAreaResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->badge()
-                ->color('success')
-                ->label('Area Name'),
+                    ->badge()
+                    ->color('success')
+                    ->label(__('filawidget::filawidget.Area Name')),
                 TextColumn::make('identifier')
-                ->badge()
-                ->color('primary')
-                ->label('Identifier'),
+                    ->badge()
+                    ->color('primary')
+                    ->label(__('filawidget::filawidget.Identifier')),
                 ToggleColumn::make('status')
-                ->label('Status'),
+                    ->label(__('filawidget::filawidget.Status')),
                 TextColumn::make('created_at')
                     ->dateTime('d, M Y h:s A')
                     ->badge()
                     ->color('success')
-                    ->label('Created at'),
+                    ->label(__('filawidget::filawidget.Created at')),
             ])
             ->filters([
                 //

@@ -8,10 +8,10 @@ class Widget extends Model
 {
     protected $table = 'widgets';
 
-    protected $fillable = ['name','slug','order','status','fieldsIds', 'widget_area_id', 'widget_type_id'];
+    protected $fillable = ['name','slug','description','order','status','fieldsIds', 'widget_area_id', 'widget_type_id'];
 
     protected $casts = [
-        'fieldsIds' => 'array', // Automatically cast JSON to an array
+        'fieldsIds' => 'array',
     ];
 
     public function scopeActive($query)
@@ -31,17 +31,11 @@ class Widget extends Model
         }
     }
     
-    /**
-     * Get the widget area that owns the widget.
-     */
     public function area()
     {
         return $this->belongsTo(WidgetArea::class,'widget_area_id');
     }
 
-    /**
-     * Get the widget type that owns the widget.
-     */
     public function type()
     {
         return $this->belongsTo(WidgetType::class,'widget_type_id');
@@ -52,11 +46,9 @@ class Widget extends Model
         return $this->hasMany(WidgetField::class);
     }
     
-    /**
-     * Get the fields associated with the widget.
-     */
     public function fields()
     {
-        return $this->belongsToMany(Field::class, 'widget_fields', 'widget_id', 'field_id');
+        //return $this->belongsToMany(Field::class, 'widget_fields', 'widget_id', 'widget_field_id');
+        return $this->hasMany(Field::class, 'widget_fields', 'widget_id', 'widget_field_id');
     }
 }

@@ -10,35 +10,29 @@ class WidgetStatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
-        // Example statistics calculations for Widget model
-
-        // Total number of widgets
         $totalWidgets = Widget::count();
 
-        // Number of active widgets
         $activeWidgets = Widget::active()->count();
 
-        // Number of inactive widgets
         $inactiveWidgets = Widget::active()->count();
 
-        // Number of widgets per type (assuming you have a type relationship or type field)
         $widgetTypeStats = Widget::select('widget_type_id')
             ->selectRaw('count(*) as count')
             ->groupBy('widget_type_id')
             ->get();
 
         return [
-            Stat::make('Total Widgets', $totalWidgets)
-                ->description('Total number of widgets created')
+            Stat::make(__('filawidget::filawidget.Total Widgets'), $totalWidgets)
+                ->description(__('filawidget::filawidget.Total number of widgets created'))
                 ->color('primary'),
-            Stat::make('Active Widgets', $activeWidgets)
-                ->description('Number of active widgets')
+            Stat::make(__('filawidget::filawidget.Active Widgets'), $activeWidgets)
+                ->description(__('filawidget::filawidget.Number of active widgets'))
                 ->color('success'),
-            Stat::make('Inactive Widgets', $inactiveWidgets)
-                ->description('Number of inactive widgets')
+            Stat::make(__('filawidget::filawidget.Inactive Widgets'), $inactiveWidgets)
+                ->description(__('filawidget::filawidget.Number of inactive widgets'))
                 ->color('danger'),
-            Stat::make('Widgets Per Type', $widgetTypeStats->pluck('count')->sum())
-                ->description('Number of widgets by type')
+            Stat::make(__('filawidget::filawidget.Widgets Per Type'), $widgetTypeStats->pluck('count')->sum())
+                ->description(__('filawidget::filawidget.Number of widgets by type'))
                 ->color('warning'),
         ];
     }

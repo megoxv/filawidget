@@ -32,13 +32,32 @@ class WidgetTypeResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // Hide this resource from the navigation
-        return auth()->user()->isAdmin();
+        return config('filawidget.should_register_navigation_widget_types');
     }
     
+    public static function getLabel(): ?string
+    {
+        return __('filawidget::filawidget.Widget Type');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('filawidget::filawidget.Widget Types');
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return __('filawidget::filawidget.Widget Type');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filawidget::filawidget.Widget Type');
+    }
+
     public static function getNavigationGroup(): ?string
     {
-        return 'Appearance';
+        return __('filawidget::filawidget.Appearance Management');
     }
     
     public static function form(Form $form): Form
@@ -48,10 +67,10 @@ class WidgetTypeResource extends Resource
                 Section::make()
                 ->schema([
                     TextInput::make('name')
-                        ->label('Name')
+                        ->label(__('filawidget::filawidget.Name'))
                         ->required(),
                     Select::make('fieldsIds')
-                        ->label('Fields')
+                        ->label(__('filawidget::filawidget.Fields'))
                         ->options(
                             WidgetsField::pluck('name','id')->toArray()
                         )
@@ -87,12 +106,10 @@ class WidgetTypeResource extends Resource
                                     default => Forms\Components\TextInput::make("config.{$field['name']}"),
                                 };
 
-                                // Apply default value if specified
                                 if (isset($field['default'])) {
                                     $component->default($field['default']);
                                 }
 
-                                // Apply validation rules if specified
                                 if (isset($field['validation'])) {
                                     $component->rules($field['validation']);
                                 }
@@ -100,7 +117,7 @@ class WidgetTypeResource extends Resource
                                 return $component->label(ucfirst(str_replace('_', ' ', $field['name'])));
                             })->toArray();
                     })
-                    ->label('Configurations')
+                    ->label(__('filawidget::filawidget.Configurations'))
                     ->maxItems(1)
                     ->minItems(1)
                     ->reorderable(false)
@@ -108,7 +125,7 @@ class WidgetTypeResource extends Resource
                     ->required()
                     ->reactive()
                     ->defaultItems(1)
-                    ->addActionLabel('Display Fields')
+                    ->addActionLabel(__('filawidget::filawidget.Display Fields'))
                     ->columnSpanFull(),
                 ])
                 ->columns(2)
@@ -120,15 +137,19 @@ class WidgetTypeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->label('Name'),
+                    ->badge()
+                    ->color('success')
+                    ->label(__('filawidget::filawidget.Name')),
                 TextColumn::make('widgets_count')
-                ->counts('widgets')
-                ->label('Widgets'),
+                    ->badge()
+                    ->color('warning')
+                    ->counts('widgets')
+                    ->label(__('filawidget::filawidget.Widgets')),
                 TextColumn::make('created_at')
                     ->dateTime('d, M Y h:s A')
                     ->badge()
                     ->color('success')
-                    ->label('Created at'),
+                    ->label(__('filawidget::filawidget.Created at')),
             ])
             ->filters([
                 //

@@ -11,30 +11,26 @@ class WidgetAreaStatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
-        // Total number of widget areas
         $totalWidgetAreas = WidgetArea::count();
 
-        // Number of active widget areas
         $activeWidgetAreas = WidgetArea::active()->count();
 
-        // Number of inactive widget areas
         $inactiveWidgetAreas = WidgetArea::where('status', false)->count();
 
-        // Number of widgets in all widget areas
         $totalWidgets = Widget::count();
-
+        
         return [
-            Stat::make('Total Widget Areas', $totalWidgetAreas)
-                ->description('Total number of widget areas created')
+            Stat::make(__('filawidget::filawidget.Total Widget Areas'), $totalWidgetAreas)
+                ->description(__('filawidget::filawidget.WidgTotal number of widget areas createdet Area'))
                 ->color('primary'),
-            Stat::make('Active Widget Areas', $activeWidgetAreas)
-                ->description('Number of active widget areas')
+            Stat::make(__('filawidget::filawidget.Active Widget Areas'), $activeWidgetAreas)
+                ->description(__('filawidget::filawidget.Number of active widget areas'))
                 ->color('success'),
-            Stat::make('Inactive Widget Areas', $inactiveWidgetAreas)
-                ->description('Number of inactive widget areas')
+            Stat::make(__('filawidget::filawidget.Inactive Widget Areas'), $inactiveWidgetAreas)
+                ->description(__('filawidget::filawidget.Number of inactive widget areas'))
                 ->color('danger'),
-            Stat::make('Total Widgets', $totalWidgets)
-                ->description('Number of widgets in all areas')
+            Stat::make(__('filawidget::filawidget.Total Widgets'), $totalWidgets)
+                ->description(__('filawidget::filawidget.Number of widgets in all areas'))
                 ->color('warning'),
         ];
     }

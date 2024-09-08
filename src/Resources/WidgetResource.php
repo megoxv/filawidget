@@ -7,13 +7,23 @@ use IbrahimBougaoua\Filawidget\Resources\WidgetResource\RelationManagers;
 use IbrahimBougaoua\Filawidget\Models\Widget;
 use IbrahimBougaoua\Filawidget\Models\Field as WidgetsField;
 use Filament\Forms;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Field;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -38,13 +48,32 @@ class WidgetResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // Hide this resource from the navigation
-        return auth()->user()->isAdmin();
+        return config('filawidget.should_register_navigation_widgets');
     }
     
+    public static function getLabel(): ?string
+    {
+        return __('filawidget::filawidget.Widget');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('filawidget::filawidget.Widgets');
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return __('filawidget::filawidget.Widget');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filawidget::filawidget.Widget');
+    }
+
     public static function getNavigationGroup(): ?string
     {
-        return 'Appearance';
+        return __('filawidget::filawidget.Appearance Management');
     }
     
     public static function form(Form $form): Form
@@ -54,11 +83,11 @@ class WidgetResource extends Resource
                 Section::make()
                 ->schema([
                     TextInput::make('name')
-                        ->label('Name')
+                        ->label(__('filawidget::filawidget.Name'))
                         ->required()
                         ->columnSpanFull(),
                     Select::make('widget_area_id')
-                        ->label('Area')
+                        ->label(__('filawidget::filawidget.Area'))
                         ->options(
                             WidgetArea::pluck('name','id')->toArray()
                         )
@@ -68,7 +97,7 @@ class WidgetResource extends Resource
                             request()->has('area_id') ? request()->query('area_id') : null
                         ),
                     Select::make('widget_type_id')
-                        ->label('Widget Type')
+                        ->label(__('filawidget::filawidget.Widget Type'))
                         ->searchable()
                         ->options(
                             WidgetType::pluck('name','id')->toArray()
@@ -82,20 +111,21 @@ class WidgetResource extends Resource
                         })
                         ->reactive()
                         ->required(),
+                    RichEditor::make('description')
+                        ->label(__('filawidget::filawidget.Description'))
+                        ->columnSpanFull(),
                     Toggle::make('status')
-                        ->label('Status'),
+                        ->label(__('filawidget::filawidget.Status')),
                     Hidden::make('fieldsIds')
                     ->reactive(),
                     Repeater::make('values')
+                    ->label(__('filawidget::filawidget.Appearance'))
                     ->schema(function (callable $get) {
 
-                        // Ensure 'fieldsIds' is not null and is an array
-                        $fieldsIds = $get('fieldsIds') ?? []; // Default to an empty array if null
+                        $fieldsIds = $get('fieldsIds') ?? [];
+                        
+                        $widgetId = $get('id') ?? null;
 
-                        // Ensure 'id' is not null
-                        $widgetId = $get('id') ?? null; // Set to null if not provided
-
-                        // Fetch fields configuration from the database only if fieldsIds is not empty
                         $fields = [];
                         if (is_array($fieldsIds) && count($fieldsIds) > 0) {
                             $fields = WidgetsField::whereIn('id', $fieldsIds)
@@ -103,67 +133,60 @@ class WidgetResource extends Resource
                                 ->toArray();
                         }
 
-                        // Fetch existing values from the database for a specific widget only if widgetId is not null
                         $values = [];
                         if (!is_null($widgetId) && is_array($fieldsIds) && count($fieldsIds) > 0) {
                             $values = WidgetField::where('widget_id', $widgetId)
                                 ->whereIn('widget_field_id', $fieldsIds)
                                 ->get(['widget_field_id', 'value'])
-                                ->pluck('value', 'widget_field_id') // Pluck values with field id as key
+                                ->pluck('value', 'widget_field_id')
                                 ->toArray();
                         }
 
-                        // Map the fields to generate form components dynamically
                         return collect($fields)->map(function ($field) use ($values) {
 
-                            // Decode the options JSON string into an associative array
                             $options = json_decode($field['options'], true);
 
-                            // Extract the default value from the options or use an empty string if not set
                             $defaultValue = $options['default'] ?? '';
 
                             $component = match ($field['type']) {
-                                'text' => Forms\Components\TextInput::make($field['name']),
-                                'textarea' => Forms\Components\Textarea::make($field['name']),
-                                'number' => Forms\Components\TextInput::make($field['name'])->numeric(),
-                                'select' => Forms\Components\Select::make($field['name'])
+                                'text' => TextInput::make($field['name']),
+                                'textarea' => Textarea::make($field['name']),
+                                'number' => TextInput::make($field['name'])->numeric(),
+                                'select' => Select::make($field['name'])
                                     ->options($field['options'] ?? []),
-                                'checkbox' => Forms\Components\Checkbox::make($field['name']),
-                                'radio' => Forms\Components\Radio::make($field['name'])
+                                'checkbox' => Checkbox::make($field['name']),
+                                'radio' => Radio::make($field['name'])
                                     ->options($field['options'] ?? []),
-                                'toggle' => Forms\Components\Toggle::make($field['name']),
-                                'color' => Forms\Components\ColorPicker::make($field['name']),
-                                'date' => Forms\Components\DatePicker::make($field['name']),
-                                'datetime' => Forms\Components\DateTimePicker::make($field['name']),
-                                'time' => Forms\Components\TimePicker::make($field['name']),
-                                'file' => Forms\Components\FileUpload::make($field['name']),
-                                'image' => Forms\Components\FileUpload::make($field['name'])->image(),
-                                'richeditor' => Forms\Components\RichEditor::make($field['name']),
-                                'markdown' => Forms\Components\MarkdownEditor::make($field['name']),
-                                'tags' => Forms\Components\TagsInput::make($field['name']),
-                                'password' => Forms\Components\TextInput::make($field['name'])->password(),
-                                default => Forms\Components\TextInput::make($field['name']),
+                                'toggle' => Toggle::make($field['name']),
+                                'color' => ColorPicker::make($field['name']),
+                                'date' => DatePicker::make($field['name']),
+                                'datetime' => DateTimePicker::make($field['name']),
+                                'time' => TimePicker::make($field['name']),
+                                'file' => FileUpload::make($field['name']),
+                                'image' => FileUpload::make($field['name'])->image(),
+                                'richeditor' => RichEditor::make($field['name']),
+                                'markdown' => MarkdownEditor::make($field['name']),
+                                'tags' => TagsInput::make($field['name']),
+                                'password' => TextInput::make($field['name'])->password(),
+                                default => TextInput::make($field['name']),
                             };
 
-                            // Apply the default value from the existing values or set it to empty if not found
                             $component->default($values[$field['id']] ?? $defaultValue);
                             
-                            // Apply validation rules if specified
                             if (isset($field['validation'])) {
                                 $component->rules($field['validation']);
                             }
 
-                            // Set a user-friendly label
                             return $component->label(ucfirst(str_replace('_', ' ', $field['name'])));
                         })->toArray();
 
                     })
-                    ->label('Configurations')
+                    ->label(__('filawidget::filawidget.Configurations'))
                     ->reorderable(false)
                     ->deletable(false)
                     ->reactive()
                     ->defaultItems(1)
-                    ->addActionLabel('Display Fields')
+                    ->addActionLabel(__('filawidget::filawidget.Display Fields'))
                     ->columnSpanFull(),
                 ])
                 ->columns(2)
@@ -177,26 +200,28 @@ class WidgetResource extends Resource
                 TextColumn::make('name')
                 ->badge()
                 ->color('success')
-                ->label('Widget'),
+                ->label(__('filawidget::filawidget.Widget')),
                 TextColumn::make('type.name')
                 ->badge()
                 ->color('primary')
-                ->label('Widget Type'),
+                ->label(__('filawidget::filawidget.Widget Type')),
                 SelectColumn::make('widget_area_id')
                     ->options(WidgetArea::pluck('name','id')->toArray())
-                    ->label('Widget Area'),
+                    ->label(__('filawidget::filawidget.Widget Area')),
                 ToggleColumn::make('status')
-                    ->label('Status'),
+                    ->label(__('filawidget::filawidget.Status')),
                 TextColumn::make('created_at')
                     ->dateTime('d, M Y h:s A')
                     ->badge()
                     ->color('success')
-                    ->label('Created at'),
+                    ->label(__('filawidget::filawidget.Created at')),
             ])
             ->filters([
                 SelectFilter::make('widget_area_id')
+                    ->label(__('filawidget::filawidget.Widget Area'))
                     ->options(WidgetArea::pluck('name','id')->toArray()),
                 Filter::make('created_at')
+                    ->label(__('filawidget::filawidget.Created at'))
                     ->form([
                         DatePicker::make('created_from'),
                         DatePicker::make('created_until'),

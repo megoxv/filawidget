@@ -9,10 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 #[ObservedBy([WidgetAreaObserver::class])]
 class WidgetArea extends Model
 {
-    // Define the table name if different from the class name in plural
     protected $table = 'widget_areas';
 
-    // Specify fillable fields to allow mass assignment
     protected $fillable = ['name', 'identifier','status','order'];
 
     public function scopeActive($query)
@@ -32,9 +30,6 @@ class WidgetArea extends Model
         }
     }
 
-    /**
-     * Get the widgets associated with the widget area.
-     */
     public function widgets()
     {
         return $this->hasMany(Widget::class);

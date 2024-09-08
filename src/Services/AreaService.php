@@ -12,6 +12,11 @@ class AreaService
         return WidgetArea::active()->with('widgets')->get();
     }
 
+    public static function getAllAreasWithOrderedWidgets(): ?Collection
+    {
+        return WidgetArea::active()->ordered()->withOrderedWidgets()->get();
+    }
+
     public static function getWidgetByIdentifier(string $identifier): ?WidgetArea
     {
         return WidgetArea::active()->where('identifier',$identifier)->first();

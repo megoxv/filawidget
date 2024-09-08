@@ -2,20 +2,30 @@
     @if ($filter === 'preview')
         
         <div class="bg-white rounded-md">
-            <div class="container mx-auto mt-6 px-0">
+            <div class="container mx-auto mt-6 px-2">
                 <!-- Widget Areas -->
-                @foreach ($areas as $area)
-                    <div class="mb-4 bg-white rounded-lg shadow-sm border">
-                        <h1 class="text-left text-white font-bold p-3 bg-gray-100 rounded-lg" style="background-color: #34495e;">
-                            {{ $area->name }} ({{ count($area->widgets) ?? 0 }})
-                        </h1>
-                        <div class='py-4 px-4 space-y-3'>
+                @foreach ($widgetAreas as $area)
+                    <div x-data="{ expanded: {{ $loop->first ? 'true' : 'false' }} }" class="mb-4 bg-white rounded-lg shadow-sm border">
+                        <div class="fi-ta-header-toolbar flex items-center justify-between rounded-lg gap-x-4 px-4 py-4 sm:px-6" style="background-color: #34495e;">
+                            <div>
+                                <h1 class="text-left text-white font-bold">
+                                    {{ $area->name }} ({{ count($area->widgets) ?? 0 }})
+                                </h1>
+                            </div>
+                            <div @click="expanded = ! expanded" class="cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                                    <path d="M7.121,17.121c-1.171,1.172-3.071,1.172-4.242,0c-1.172-1.171-1.172-3.071,0-4.242l7-7C10.465,5.293,11.232,5,12,5v7.243L7.121,17.121z" opacity=".35" />
+                                    <path d="M21.121,12.879C21.707,13.464,22,14.232,22,15s-0.293,1.536-0.879,2.121c-1.171,1.172-3.071,1.172-4.242,0L12,12.243V5c0.768,0,1.535,0.293,2.121,0.879L21.121,12.879z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div x-show="expanded" x-collapse class='py-4 px-4 space-y-3'>
                             @forelse ($area->widgets as $widget)
                                 <div class="w-full border rounded">
                                     <!-- Tailwind Card Component -->
                                     <div class="shadow rounded-lg widget-card">
-                                        <div class="bg-gray-100 p-4 text-center rounded-lg">
-                                            <p class="text-gray-700 font-bold">
+                                        <div class="bg-gray-100 p-4 rounded-lg">
+                                            <p class="text-center text-gray-700 font-bold">
                                                 {{ $widget->name }}
                                             </p>
                                         </div>
@@ -26,7 +36,7 @@
                                     <!-- Tailwind Card Component -->
                                     <div class="bg-white shadow rounded-lg widget-card">
                                         <div class="p-4 bg-gray-100 text-center">
-                                            <p class="text-gray-700 font-bold">No Widget Found</p>
+                                            <p class="text-gray-700 font-bold">{{ __('filawidget::filawidget.No Widget Found') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -72,8 +82,8 @@
 
             <div class="fi-header flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between py-2 mb-2">
                 <div>
-                    <h2 class="text-lg font-bold">Areas with their widgets.</h2>
-                    <small>Change the order of areas and widgets just by using Drag-and-drop.</small>
+                    <h2 class="text-lg font-bold">{{ __('filawidget::filawidget.Areas with their widgets.') }}</h2>
+                    <small>{{ __('filawidget::filawidget.Change the order of areas and widgets just by using Drag-and-drop.') }}</small>
                 </div>
                 <div class="fi-ac gap-3 flex flex-wrap items-center justify-start shrink-0">
                     <div class="p-2 rounded-full bg-primary-500">
@@ -156,11 +166,11 @@
                                         </div>
                                 
                                         <h4 class="fi-ta-empty-state-heading text-base font-semibold leading-6 text-gray-950 dark:text-white">
-                                            No Widgets
+                                            {{ __('filawidget::filawidget.No Widgets') }}
                                         </h4>
                                 
                                         <p class="fi-ta-empty-state-description text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                            Create a widget to get started.
+                                            {{ __('filawidget::filawidget.Create a widget to get started.') }}
                                         </p>
                                         
                                         <div class="fi-ta-actions flex shrink-0 items-center gap-3 flex-wrap justify-center mt-6">
@@ -169,7 +179,7 @@
                                                     <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"></path>
                                                 </svg>      
                                                 <span class="fi-btn-label">
-                                                    Create New Widget
+                                                    {{ __('filawidget::filawidget.Create New Widget') }}
                                                 </span>
                                             </a>
                                             <a href="{{ route('filament.admin.resources.widgets.index') }}" style="background: #19a5a1;" class="fi-btn relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action">  
@@ -177,7 +187,7 @@
                                                     <path d="M7 4.5 A 2.5 2.5 0 0 0 4.5 7 A 2.5 2.5 0 0 0 7 9.5 A 2.5 2.5 0 0 0 9.5 7 A 2.5 2.5 0 0 0 7 4.5 z M 15 4.5 A 2.5 2.5 0 0 0 12.5 7 A 2.5 2.5 0 0 0 15 9.5 A 2.5 2.5 0 0 0 17.5 7 A 2.5 2.5 0 0 0 15 4.5 z M 23 4.5 A 2.5 2.5 0 0 0 20.5 7 A 2.5 2.5 0 0 0 23 9.5 A 2.5 2.5 0 0 0 25.5 7 A 2.5 2.5 0 0 0 23 4.5 z M 7 12.5 A 2.5 2.5 0 0 0 4.5 15 A 2.5 2.5 0 0 0 7 17.5 A 2.5 2.5 0 0 0 9.5 15 A 2.5 2.5 0 0 0 7 12.5 z M 15 12.5 A 2.5 2.5 0 0 0 12.5 15 A 2.5 2.5 0 0 0 15 17.5 A 2.5 2.5 0 0 0 17.5 15 A 2.5 2.5 0 0 0 15 12.5 z M 23 12.5 A 2.5 2.5 0 0 0 20.5 15 A 2.5 2.5 0 0 0 23 17.5 A 2.5 2.5 0 0 0 25.5 15 A 2.5 2.5 0 0 0 23 12.5 z M 7 20.5 A 2.5 2.5 0 0 0 4.5 23 A 2.5 2.5 0 0 0 7 25.5 A 2.5 2.5 0 0 0 9.5 23 A 2.5 2.5 0 0 0 7 20.5 z M 15 20.5 A 2.5 2.5 0 0 0 12.5 23 A 2.5 2.5 0 0 0 15 25.5 A 2.5 2.5 0 0 0 17.5 23 A 2.5 2.5 0 0 0 15 20.5 z M 23 20.5 A 2.5 2.5 0 0 0 20.5 23 A 2.5 2.5 0 0 0 23 25.5 A 2.5 2.5 0 0 0 25.5 23 A 2.5 2.5 0 0 0 23 20.5 z" fill="#FFFFFF" />
                                                 </svg> 
                                                 <span class="fi-btn-label">
-                                                    Widgets
+                                                    {{ __('filawidget::filawidget.Widgets') }}
                                                 </span>
                                             </a>
                                         </div>
@@ -244,8 +254,8 @@
 
         <div class="fi-header flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between py-2 mb-2">
             <div>
-                <h2 class="text-lg font-bold">Pages with subpages</h2>
-                <small>Change the order of pages and subpages just by using Drag-and-drop.</small>
+                <h2 class="text-lg font-bold">{{ __('filawidget::filawidget.Pages with subpages') }}</h2>
+                <small>{{ __('filawidget::filawidget.Change the order of pages and subpages just by using Drag-and-drop.') }}</small>
             </div>
             <div class="fi-ac gap-3 flex flex-wrap items-center justify-start shrink-0">
                 <div class="p-2 rounded-full bg-primary-500">
@@ -335,11 +345,11 @@
                                     </div>
                             
                                     <h4 class="fi-ta-empty-state-heading text-base font-semibold leading-6 text-gray-950 dark:text-white">
-                                        No Pages
+                                        {{ __('filawidget::filawidget.No Pages') }}
                                     </h4>
                             
                                     <p class="fi-ta-empty-state-description text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                        Create a Pages to get started.
+                                        {{ __('filawidget::filawidget.Create a Pages to get started.') }}
                                     </p>
                                     
                                     <div class="fi-ta-actions flex shrink-0 items-center gap-3 flex-wrap justify-center mt-6">
@@ -348,7 +358,7 @@
                                                 <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"></path>
                                             </svg>      
                                             <span class="fi-btn-label">
-                                                Create New Pages
+                                                {{ __('filawidget::filawidget.Create New Pages') }}
                                             </span>
                                         </a>
                                         <a href="{{ route('filament.admin.resources.pages.index') }}" style="background: #19a5a1;" class="fi-btn relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action">  
@@ -356,7 +366,7 @@
                                                 <path d="M7 4.5 A 2.5 2.5 0 0 0 4.5 7 A 2.5 2.5 0 0 0 7 9.5 A 2.5 2.5 0 0 0 9.5 7 A 2.5 2.5 0 0 0 7 4.5 z M 15 4.5 A 2.5 2.5 0 0 0 12.5 7 A 2.5 2.5 0 0 0 15 9.5 A 2.5 2.5 0 0 0 17.5 7 A 2.5 2.5 0 0 0 15 4.5 z M 23 4.5 A 2.5 2.5 0 0 0 20.5 7 A 2.5 2.5 0 0 0 23 9.5 A 2.5 2.5 0 0 0 25.5 7 A 2.5 2.5 0 0 0 23 4.5 z M 7 12.5 A 2.5 2.5 0 0 0 4.5 15 A 2.5 2.5 0 0 0 7 17.5 A 2.5 2.5 0 0 0 9.5 15 A 2.5 2.5 0 0 0 7 12.5 z M 15 12.5 A 2.5 2.5 0 0 0 12.5 15 A 2.5 2.5 0 0 0 15 17.5 A 2.5 2.5 0 0 0 17.5 15 A 2.5 2.5 0 0 0 15 12.5 z M 23 12.5 A 2.5 2.5 0 0 0 20.5 15 A 2.5 2.5 0 0 0 23 17.5 A 2.5 2.5 0 0 0 25.5 15 A 2.5 2.5 0 0 0 23 12.5 z M 7 20.5 A 2.5 2.5 0 0 0 4.5 23 A 2.5 2.5 0 0 0 7 25.5 A 2.5 2.5 0 0 0 9.5 23 A 2.5 2.5 0 0 0 7 20.5 z M 15 20.5 A 2.5 2.5 0 0 0 12.5 23 A 2.5 2.5 0 0 0 15 25.5 A 2.5 2.5 0 0 0 17.5 23 A 2.5 2.5 0 0 0 15 20.5 z M 23 20.5 A 2.5 2.5 0 0 0 20.5 23 A 2.5 2.5 0 0 0 23 25.5 A 2.5 2.5 0 0 0 25.5 23 A 2.5 2.5 0 0 0 23 20.5 z" fill="#FFFFFF" />
                                             </svg> 
                                             <span class="fi-btn-label">
-                                                Pages
+                                                {{ __('filawidget::filawidget.Pages') }}
                                             </span>
                                         </a>
                                     </div>

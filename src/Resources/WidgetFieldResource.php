@@ -23,13 +23,32 @@ class WidgetFieldResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // Hide this resource from the navigation
-        return auth()->user()->isAdmin();
+        return config('filawidget.should_register_navigation_fields');
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __('filawidget::filawidget.Field');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('filawidget::filawidget.Fields');
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return __('filawidget::filawidget.Field');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filawidget::filawidget.Field');
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Appearance';
+        return __('filawidget::filawidget.Appearance Management');
     }
 
     public static function form(Form $form): Form
@@ -39,11 +58,11 @@ class WidgetFieldResource extends Resource
                 Section::make()
                 ->schema([
                     Forms\Components\TextInput::make('name')
-                        ->label('Field Name')
+                        ->label(__('filawidget::filawidget.Field Name'))
                         ->required(),
         
                     Forms\Components\Select::make('type')
-                        ->label('Field Type')
+                        ->label(__('filawidget::filawidget.Field Type'))
                         ->options([
                             'text' => 'Text',
                             'textarea' => 'Textarea',
@@ -66,8 +85,8 @@ class WidgetFieldResource extends Resource
                         ->required(),
         
                     Forms\Components\Textarea::make('options')
-                        ->label('Options')
-                        ->helperText('Provide additional options in JSON format (e.g., {"default": "value", "validation": "required|max:255"})')
+                        ->label(__('filawidget::filawidget.Options'))
+                        ->helperText(__('filawidget::filawidget.Provide additional options in JSON format (e.g., {"default": "value", "validation": "required|max:255"})'))
                         ->columnSpanFull(),
                 ])
                 ->columns(2),
@@ -79,23 +98,23 @@ class WidgetFieldResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->badge()
-                ->color('success')
-                ->label('Field Name'),
+                    ->badge()
+                    ->color('success')
+                    ->label(__('filawidget::filawidget.Field Name')),
                 TextColumn::make('type')
-                ->badge()
-                ->color('success')
-                ->label('Field Type'),
+                    ->badge()
+                    ->color('warning')
+                    ->label(__('filawidget::filawidget.Field Type')),
                 TextColumn::make('widgets_count')
-                ->counts('widgets')
-                ->badge()
-                ->color('success')
-                ->label('Used'),
+                    ->counts('widgets')
+                    ->badge()
+                    ->color('success')
+                    ->label(__('filawidget::filawidget.Used')),
                 TextColumn::make('created_at')
                     ->dateTime('d, M Y h:s A')
                     ->badge()
                     ->color('success')
-                    ->label('Created at'),
+                    ->label(__('filawidget::filawidget.Created at')),
             ])
             ->filters([
                 //

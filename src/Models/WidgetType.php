@@ -14,8 +14,8 @@ class WidgetType extends Model
     protected $fillable = ['name', 'config','slug', 'fieldsIds'];
 
     protected $casts = [
-        'config' => 'array', // Automatically cast the JSON to an array
-        'fieldsIds' => 'array', // Automatically cast JSON to an array
+        'config' => 'array',
+        'fieldsIds' => 'array',
     ];
 
     public function widgets()
@@ -23,9 +23,6 @@ class WidgetType extends Model
         return $this->hasMany(Widget::class,'widget_type_id');
     }
 
-    /**
-     * Accessor to get the fields associated with this widget type.
-     */
     public function fields()
     {
         return $this->belongsToMany(Field::class, 'widget_type_fields', 'widget_type_id', 'field_id');

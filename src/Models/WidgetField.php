@@ -6,13 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class WidgetField extends Model
 {
-    // Disable auto-incrementing primary key
     public $incrementing = false;
 
-    // If you use a composite key, specify the primary keys array
     protected $primaryKey = ['widget_id', 'widget_field_id'];
     
-    // Disable timestamps if not needed
     public $timestamps = false;
 
     protected $fillable = [
@@ -22,6 +19,6 @@ class WidgetField extends Model
     ];
 
     protected $casts = [
-        'value' => 'array', // Automatically cast JSON to an array
+        'value' => 'array',
     ];
 }

@@ -19,30 +19,30 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('pages')->onDelete('cascade');
             $table->timestamps();
         });
-        
+
         Schema::create('widget_areas', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // The name of the widget area (e.g., Sidebar, Footer)
-            $table->string('identifier')->unique(); // Unique identifier for the widget area (e.g., 'sidebar')
-            $table->integer('order')->default(0); // Display order of the widget within its area
-            $table->boolean('status')->default(false); // Display order of the widget within its area
+            $table->string('name');
+            $table->string('identifier')->unique();
+            $table->integer('order')->default(0);
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
-        
+
         Schema::create('widget_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->json('config')->nullable(); // Configuration options for the widget
-            $table->text('fieldsIds')->nullable(); // Display order of the widget within its area
+            $table->json('config')->nullable();
+            $table->text('fieldsIds')->nullable();
             $table->timestamps();
         });
 
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // The name of the field (e.g., 'title', 'content')
-            $table->string('type'); // The type of the field (e.g., 'text', 'textarea', 'number', 'color')
-            $table->json('options')->nullable(); // Additional options like default value, validation rules
+            $table->string('name');
+            $table->string('type');
+            $table->json('options')->nullable();
             $table->timestamps();
         });
 
@@ -50,8 +50,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->integer('order')->default(0); // Display order of the widget within its area
-            $table->boolean('status')->default(false); // Display order of the widget within its area
+            $table->text('description')->nullable();
+            $table->integer('order')->default(0);
+            $table->boolean('status')->default(false);
             $table->foreignId('widget_area_id')->constrained('widget_areas')->onDelete('cascade');
             $table->foreignId('widget_type_id')->constrained('widget_types')->onDelete('cascade');
             $table->timestamps();
@@ -67,9 +68,11 @@ return new class extends Migration
 
     public function down()
     {
+        Schema::dropIfExists('pages');
         Schema::dropIfExists('widgets');
         Schema::dropIfExists('fields');
         Schema::dropIfExists('widget_fields');
         Schema::dropIfExists('widget_areas');
+        Schema::dropIfExists('widget_types');
     }
 };
