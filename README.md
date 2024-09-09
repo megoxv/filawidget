@@ -137,6 +137,19 @@ Available fields of filament that can use it for create dynamic widget.
 ## Usage
 
 ```php
+// AdminPanelProvider
+use IbrahimBougaoua\Filawidget\FilaWidgetPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+            ->plugins([
+                FilaWidgetPlugin::make(),
+            ]);
+}
+```
+
+```php
 // Areas
 use IbrahimBougaoua\Filawidget\Services\AreaService;
 
