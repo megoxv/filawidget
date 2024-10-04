@@ -7,6 +7,10 @@
 
 **Filawidget** is a dynamic content and widget management package for **FilamentPHP**, providing an easy-to-use drag-and-drop interface to manage widgets, widget areas, and hierarchical pages. The package is designed to enhance the customization of page layouts and widgets in Laravel projects.
 
+## Support us
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/ibrahimbougaoua)
+
 ## Key Features
 
 ### Widget Management
@@ -38,10 +42,6 @@
 
 ### Note :
 Screenshots from the client project.
-
-## Support us
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/ibrahimbougaoua)
 
 <br />
 <a href="https://www.youtube.com/watch?v=KyedlYpU5i0" target="_blank">Youtube Video</a>
